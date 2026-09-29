@@ -1,0 +1,79 @@
+.Comments {
+    h4 {
+        font-weight: 700;
+    }
+
+    .butn_theme {
+        border-radius: 8px;
+        background: rgba(200, 35, 44, 0.50);
+        border: none !important;
+        padding: 3px 20px;
+        position: absolute;
+        top: 55px;
+        right: 0;
+        /* padding: 7px; */
+        margin: 10px;
+    }
+
+    .scroll_comment {
+        max-height: calc(100vh - 100px);
+        /* Set max height for the list */
+        overflow-y: auto;
+    }
+
+    .scroll_comment {
+        -ms-overflow-style: none;
+        scroll-width: none;
+      }
+      .scroll_comment::-webkit-scrollbar {
+        display: none;
+      }
+
+    .read_comments {
+        padding: 20px 0px;
+        margin: 10px;
+
+        p {
+            color: #4F4F4F;
+            font-size: 15px;
+            font-style: normal;
+            font-weight: 600;
+            margin: 10px 10px;
+
+        }
+
+        .imagesss {
+            border-radius: 100px;
+            // margin: 0px 5px;
+        }
+
+        .name {
+            margin: 0px 10px;
+
+            h5 {
+                color: rgba(51, 51, 51, 0.80);
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 600;
+                // line-height: 24px;
+                /* 120% */
+                text-transform: capitalize;
+                margin: 0;
+            }
+
+            h6 {
+                color: rgba(51, 51, 51, 0.60);
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 400;
+                margin: 0;
+                // line-height: 22px;
+                /* 137.5% */
+            }
+        }
+
+        .section1 {
+            display: flex;
+        }
+    }
+}

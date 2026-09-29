@@ -1,0 +1,56 @@
+.Otp {
+    .Main {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        height: 80vh;
+
+        .Left {
+            width: 50%;
+            background-color: #EE2325;
+            // height: 100px;
+        }
+
+        .Right {
+            width: 50%;
+            align-self: center;
+
+            .form_inner {
+                width: 70%;
+                margin: auto;
+p{
+    text-align: right;
+    font-weight: bolder;
+    color: #696969;
+}
+                h1 {
+                    text-align: center;
+                }
+            }
+
+            .buttom_text {
+                margin: 20px;
+                text-align: center;
+                font-size: 18px;
+            }
+        }
+
+    }
+    @media (max-width: 767px) {
+        .Main{
+            height: 100% !important;
+        }
+        .Left {
+            display: none;
+        }
+
+        .Right {
+            width: 100% !important;
+            align-self: auto !important;
+            margin-bottom: 20px !important;
+            .form_inner {
+                width: 95% !important;
+            }
+        }
+    }
+}

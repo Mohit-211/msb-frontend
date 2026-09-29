@@ -1,0 +1,29 @@
+.cardContainer{
+    width: 250px;
+    height: 300px;
+    border: 1px solid black;
+    border-radius: 20px;
+    background-color: #111827;
+    color: white;
+    padding: 10px;
+    display: flex;
+    // justify-content: center;
+    flex-direction: column;
+    
+}
+.planeButton{
+    background-color: #4f46e5;
+    color: white;
+    margin: 30px 0;
+}
+.divider{
+    margin: 10px 0;
+    background-color: #777e8a;
+}
+.listContainer{
+    width: 100%;
+    display: flex;
+}
+.list{
+    color: #777e8a;
+}

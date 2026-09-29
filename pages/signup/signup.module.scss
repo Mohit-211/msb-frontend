@@ -1,0 +1,78 @@
+.Signup {
+  // margin: 40px 0px;
+
+  .Main {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 88vh;
+
+    .Left {
+      width: 50%;
+      background-color: #ee2325;
+      // height: 100px;
+    }
+
+    .Right {
+      width: 50%;
+      align-self: center;
+
+      .form_inner {
+        width: 70%;
+        margin: auto;
+
+        h1 {
+          text-align: center;
+        }
+      }
+
+      .buttom_text {
+        margin: 20px;
+        text-align: center;
+        font-size: 18px;
+      }
+    }
+    .input_container {
+      position: relative;
+      span {
+        position: absolute;
+        right: 10px;
+        top: 5px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+    }
+    .error_message {
+      padding-top: 5px;
+      color: red !important;
+      text-align: left !important;
+      font-weight: 500;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .Main {
+      height: 100% !important;
+    }
+    .Left {
+      display: none;
+    }
+
+    .Right {
+      width: 100% !important;
+      margin-bottom: 30px !important;
+      align-self: auto !important;
+
+      .form_inner {
+        width: 95% !important;
+        margin: auto !important;
+      }
+      .SignUpBtn {
+        width: 100%;
+        margin-top: 20px;
+      }
+    }
+  }
+}

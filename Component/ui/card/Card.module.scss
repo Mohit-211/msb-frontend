@@ -1,0 +1,47 @@
+/* Base Card */
+.card {
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+
+/* Card Header */
+.cardHeader {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Title */
+.cardTitle {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 0;
+}
+
+/* Description */
+.cardDescription {
+  font-size: 14px;
+  color: var(--muted-foreground);
+  margin: 0;
+}
+
+/* Card Body */
+.cardContent {
+  padding: 24px;
+  padding-top: 0;
+}
+
+/* Footer */
+.cardFooter {
+  padding: 24px;
+  padding-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
