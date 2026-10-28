@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { getClinetProfile } from "@/redux/getClientProfileSlice";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import ImagesCom from "@/Component/images";
-import { message } from "antd";
+import { toast } from "@/Component/ui/toast/toast";
 
 const Signin = () => {
   const router = useRouter();
@@ -49,7 +49,7 @@ const Signin = () => {
       .then((res) => {
         setLoading(false);
         if (res.data === 200 || res.data.status === 200) {
-          message.success("Congratulations! You have successfully logged in.");
+          toast.success("Congratulations! You have successfully logged in.");
           setTimeout(() => {
             dispatch(getClinetProfile());
             const token = res.data.data.tokens.access.token;
@@ -62,7 +62,10 @@ const Signin = () => {
       .catch((error) => {
         console.log(error, "error");
         setLoading(false);
-        message.error(error?.response?.data?.message);
+        toast.error(
+          error?.response?.data?.message ||
+            "Couldn't sign in. Check your connection and try again.",
+        );
         console.log(error, "error");
       });
   };

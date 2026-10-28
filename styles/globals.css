@@ -196,6 +196,10 @@
   --z-overlay: 1000;
   --z-floating: 1000;
   --z-drawer: 1001;
+  /* Portalled layers sit above the floating chat window (1000). */
+  --z-popover: 1030;
+  --z-modal: 1050;
+  --z-toast: 1100;
 
   /* ---- Motion ---- */
   --duration-fast: 0.15s;
@@ -209,6 +213,9 @@
   /* The fixed site header is exactly this tall. Pages clear it with
      padding-top or margin-top: var(--header-height). */
   --header-height: 4.5rem;
+  /* Width of page content; <Container> in Component/ui uses these. */
+  --container-max: 71.25rem;
+  --container-gutter: 0.75rem;
 }
 
 /* Same width as bp.up(md) in styles/_breakpoints.scss. */
@@ -238,7 +245,10 @@ html {
   text-size-adjust: 100%;
 }
 
+/* flow-root keeps a page's top margin (used to clear the header) inside body;
+   otherwise it collapses through and adds that much empty scroll. */
 body {
+  display: flow-root;
   position: relative;
   min-height: 100%;
   font-family: var(--font-sans);
@@ -247,13 +257,13 @@ body {
   line-height: var(--leading-normal);
   color: var(--color-text);
   background-color: var(--color-bg);
+  -webkit-tap-highlight-color: transparent;
 }
 
-p {
-  margin: 0;
-}
+/* Element defaults below use :where() so they have zero specificity:
+   any component or page class overrides them, whatever order CSS loads in. */
 
-a {
+:where(a) {
   color: var(--color-link);
   text-decoration: underline;
   text-underline-offset: 0.15em;
@@ -263,22 +273,122 @@ a:hover {
   color: var(--color-link-hover);
 }
 
-img,
-svg {
+:where(img, svg) {
   vertical-align: middle;
 }
 
-button,
-input,
-select,
-optgroup,
-textarea {
+/* Heading and list defaults the pages were laid out with. */
+:where(h1, h2, h3, h4, h5, h6) {
+  margin-bottom: 0.5rem;
+  font-weight: var(--font-weight-medium);
+  line-height: 1.2;
+}
+
+:where(h1) {
+  font-size: min(calc(1.375rem + 1.5vw), 2.5rem);
+}
+
+:where(h2) {
+  font-size: min(calc(1.325rem + 0.9vw), 2rem);
+}
+
+:where(h3) {
+  font-size: min(calc(1.3rem + 0.6vw), 1.75rem);
+}
+
+:where(h4) {
+  font-size: min(calc(1.275rem + 0.3vw), 1.5rem);
+}
+
+:where(h5) {
+  font-size: 1.25rem;
+}
+
+:where(h6) {
+  font-size: 1rem;
+}
+
+:where(ul, ol) {
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+}
+
+:where(ul ul, ul ol, ol ul, ol ol) {
+  margin-bottom: 0;
+}
+
+:where(blockquote, figure, pre) {
+  margin-bottom: 1rem;
+}
+
+:where(small) {
+  font-size: 0.875em;
+}
+
+:where(code, kbd, pre, samp) {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+
+:where(pre) {
+  overflow: auto;
+}
+
+:where(hr) {
+  margin: 1rem 0;
+  border: 0;
+  border-top: 1px solid currentColor;
+  opacity: 0.25;
+}
+
+:where(table) {
+  border-collapse: collapse;
+  caption-side: bottom;
+}
+
+:where(th) {
+  text-align: inherit;
+}
+
+/* Form elements */
+:where(button, input, select, optgroup, textarea) {
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
 }
 
-:focus-visible {
+:where(label) {
+  display: inline-block;
+}
+
+:where(button) {
+  border-radius: 0;
+  text-transform: none;
+}
+
+:where(button:not(:disabled), [role="button"]) {
+  cursor: pointer;
+}
+
+:where(textarea) {
+  resize: vertical;
+}
+
+:where(fieldset) {
+  min-width: 0;
+  border: 0;
+}
+
+:where(iframe) {
+  border: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* Default focus ring; components that draw their own (such as <Input>) replace it. */
+:where(:focus-visible) {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
@@ -308,7 +418,41 @@ textarea {
    Third-party widgets that stay
    ========================================================================== */
 
-/* react-phone-input-2 sizes its field inline; match the other full-width inputs. */
-.react-tel-input .form-control {
-  width: 100% !important;
+/* react-phone-input-2 ships its own field styles. These match it to <Input>
+   from Component/ui; the element in each selector outranks the library's CSS,
+   which loads later. */
+.react-tel-input input.form-control {
+  width: 100%;
+  height: auto;
+  padding: 0.875rem 1rem 0.875rem 3.5rem;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  letter-spacing: normal;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--duration-moderate) var(--ease-standard),
+    box-shadow var(--duration-moderate) var(--ease-standard);
+}
+
+.react-tel-input input.form-control:hover:not(:focus) {
+  border-color: var(--color-border-strong);
+}
+
+.react-tel-input input.form-control:focus {
+  border-color: var(--color-secondary);
+  box-shadow: var(--ring-secondary);
+}
+
+.react-tel-input div.flag-dropdown {
+  background-color: var(--color-bg-subtle);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+
+.react-tel-input div.flag-dropdown .selected-flag {
+  width: 2.75rem;
+  padding-left: 0.75rem;
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
 }

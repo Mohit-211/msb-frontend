@@ -12,10 +12,16 @@
             margin: 10px;
         }
     }
+    .custom_file_upload {
+        cursor: pointer;
+    }
     .custom_file_upload input[type="file"] {
         display: none !important;
       }
-  
+    .profileName {
+        text-transform: capitalize;
+    }
+
     h6 {
         color: var(--color-text-muted);
         font-family: var(--font-sans);
@@ -45,8 +51,11 @@
         display: flex;
         justify-content: space-between;
 
+        // Edit / Change password tabs
         .btn_tab {
             width: 20%;
+            gap: var(--space-3);
+            padding-block: var(--space-5);
         }
 
         .Form_ctm {
@@ -60,34 +69,21 @@
             border: 2px solid var(--color-border-strong);
         }
 
-        // Edit / Change password tabs (react-bootstrap Buttons, themed through Bootstrap's variables)
-        .btn_theme_div {
-            --bs-btn-bg: transparent;
-            --bs-btn-color: var(--color-text);
-            --bs-btn-hover-bg: var(--color-bg-muted);
-            --bs-btn-hover-color: var(--color-text);
-            --bs-btn-active-bg: var(--color-bg-muted);
-            --bs-btn-active-color: var(--color-text);
-            border-radius: var(--radius-md);
-            box-shadow: none !important;
-            display: block;
-            width: 100%;
-            margin: 20px 0px;
-            border: none !important;
-            font-weight: var(--font-weight-bold);
-
-            &.tabActive {
-                --bs-btn-bg: var(--color-secondary);
-                --bs-btn-color: var(--color-on-secondary);
-                --bs-btn-hover-bg: var(--color-secondary-hover);
-                --bs-btn-hover-color: var(--color-on-secondary);
-                --bs-btn-active-bg: var(--color-secondary-active);
-                --bs-btn-active-color: var(--color-on-secondary);
-            }
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-5);
         }
-        .buttons{
-            display: flex; 
-            margin: 100px 0px;
+        .buttons {
+            display: flex;
+            gap: var(--space-3);
+            margin: 80px 0px;
+        }
+        .cancelButton {
+            flex: 0 0 28%;
+        }
+        .submitButton {
+            flex: 1;
         }
     }
 }

@@ -1,67 +1,60 @@
 import { CardElement } from "@stripe/react-stripe-js";
 import React, { useState } from "react";
-import { Form } from "react-bootstrap";
-import Modal from "react-bootstrap/Modal";
 import styles from "./Modal.module.scss";
-const CustomModal = (props) => {
+import { Button } from "@/Component/ui/button/Button";
+import { Dialog, DialogContent } from "@/Component/ui/dialog/Dialog";
+import { Field, Input } from "@/Component/ui/field/Field";
+const CustomModal = ({ show, onHide, price, loading, stripe, createSubscription }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const handleSubmit = () => {
-    props.createSubscription(name, email, props?.price?.id);
+    createSubscription(name, email, price?.id);
   }
   return (
-    <Modal
-      {...props}
-      size="md"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
+    <Dialog
+      open={show}
+      onOpenChange={(open) => {
+        if (!open) onHide();
+      }}
     >
-      <Modal.Body>
-        <section className={styles.main}>
-          <div className={styles.mainCard}>
-            <div className={styles.cardTop}>
-              <h3>Total Amount:<span className={styles.amount}>
-                {props?.price?.unit_amount / 100}
-              </span>
-              </h3>
-
-            </div>
-            <div className={styles.cardBottom}>
-
-              <Form.Group className="mb-3">
-                <Form.Label>Name</Form.Label>
-                <Form.Control
-                  placeholder="Enter Your Name"
-                  type="text"
-                  value={name}
-                  name="name"
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control
-                  placeholder="Enter Your Email"
-                  type="text"
-                  value={email}
-                  name="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Form.Group>
-              <div className="form-group mb-3">
-                <label className="mb-3">Enter Your Card Details:</label>
-                <CardElement className={styles.cardField} />
-              </div>
-              <div className={styles.btnGroup}>
-                <button onClick={handleSubmit} disabled={!props.stripe}>{props.loading ? "Loading" : "Subscribe"}</button>
-              </div>
-            </div>
-          </div>
-        </section>
-      </Modal.Body>
-
-    </Modal>
-
+      <DialogContent title="Subscribe">
+        <p className={styles.amount}>
+          Total amount: <strong>{price?.unit_amount / 100}</strong>
+        </p>
+        <form
+          className={styles.form}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+        >
+          <Field label="Name">
+            <Input
+              placeholder="Enter Your Name"
+              type="text"
+              value={name}
+              name="name"
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Field>
+          <Field label="Email address">
+            <Input
+              placeholder="Enter Your Email"
+              type="email"
+              value={email}
+              name="email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Field>
+          <Field id="card-details" label="Card details">
+            <CardElement id="card-details" className={styles.cardField} />
+          </Field>
+          <Button type="submit" variant="secondary" size="lg" block loading={loading} disabled={!stripe}>
+            Subscribe
+          </Button>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 export default CustomModal;

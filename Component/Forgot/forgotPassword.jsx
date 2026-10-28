@@ -2,12 +2,12 @@ import * as React from "react";
 import SendOtp from "./SendOtp";
 import ChangePassword from "./ChangePassword";
 import { useState } from "react";
-import { Button } from "react-bootstrap";
 import { useCallback } from "react";
 import { useRouter } from "next/router";
-import DescriptionAlerts from "@/Constants/alert/alert";
 import { ForgetSendOTPAPI, ForgotPassword } from "@/Constants/Api/Api";
 import styles from "./Forgot.module.scss";
+import { Button } from "@/Component/ui/button/Button";
+import { toast } from "@/Component/ui/toast/toast";
 const steps = ["Create an ad group", "Create an ad"];
 export default function ForgotPasswordComponent() {
   const router =useRouter()
@@ -18,10 +18,6 @@ export default function ForgotPasswordComponent() {
     otp: "",
     password: "",
     confirmPassword: "",
-  });
-  const [alert, setalert] = useState(false);
-  const [alertConfig, setAlertConfig] = useState({
-    text: "",
   });
 
   const validateEmail = (email) => {
@@ -56,7 +52,6 @@ export default function ForgotPasswordComponent() {
   }, [router]);
 
   const handleChangePassword = () => {
-    setalert(false)
     ForgotPassword(
       formData.email,
       parseInt(formData.otp),
@@ -65,98 +60,49 @@ export default function ForgotPasswordComponent() {
     )
       .then((res) => {
         if (res.status) {
-          setalert(true);
-          setAlertConfig({
-            icon: "success",
-            text: res.data.message,
-            time: 3000,
-          });
+          toast.success(res.data.message);
         }
         setTimeout(() => {
-          setalert(false);
           Navigation();
         }, 2000);
       })
       .catch((error) => {
-        setalert(true);
-        setAlertConfig({
-          icon: "warning",
-          text: "Password and Confirm Password must be equal",
-        });
-        setTimeout(() => {
-          setalert(false);
-        }, 7000);
+        toast.warning(
+          error?.response?.data?.message ||
+            "Password and Confirm Password must be equal",
+        );
       });
   };
 
   const handleSendOTP = () => {
-    setalert(false);
-  
-    // Check if formData.email is empty
     if (formData.email.trim() === '') {
-      setalert(true);
-      setAlertConfig({
-        icon: "warning",
-        text: "Email is required to send OTP.",
-      });
-      setTimeout(() => {
-        setalert(false);
-      }, 5000);
-      return; // Prevent further execution
+      toast.warning("Email is required to send OTP.");
+      return;
+    }
+    if (!validateEmail(formData.email)) {
+      toast.warning("Invalid email format. Please enter a valid email address.");
+      return;
     }
 
-     // Check if email format is invalid
-  if (!validateEmail(formData.email)) {
-    setalert(true);
-    setAlertConfig({
-      icon: "warning",
-      text: "Invalid email format. Please enter a valid email address.",
-    });
-    setTimeout(() => {
-      setalert(false);
-    }, 5000);
-    return; // Prevent further execution
-  }
-  
     ForgetSendOTPAPI(formData.email)
       .then((res) => {
         if (res.status === 200) {
-          setalert(true);
-          setAlertConfig({
-            icon: "info",
-            text: "We have sent an OTP to your email.",
-            time: 5000,
-          });
+          toast.info("We have sent an OTP to your email.");
         }
-        setTimeout(() => {
-          setalert(false);
-        }, 5000);
         const newCompleted = completed;
         newCompleted[activeStep] = true;
         setCompleted(newCompleted);
         handleNext();
       })
       .catch((error) => {
-        setalert(true);
-        setAlertConfig({
-          icon: error.response.data.code === 404 ? "warning" : "info",
-          text: error.response.data.message,
-        });
-        setTimeout(() => {
-          setalert(false);
-        }, 7000);
+        const data = error?.response?.data;
+        const show = data?.code === 404 ? toast.warning : toast.info;
+        show(data?.message || "Couldn't send the code. Try again.");
       });
   };
 
   return (
     <div className={styles.forgotCard}>
-      {alert && (
-        <DescriptionAlerts
-          text={alertConfig.text}
-          icon={alertConfig.icon}
-          time={alertConfig.time}
-        />
-      )}
         <div>
           <div >
             {activeStep === 0 && (
@@ -169,25 +115,13 @@ export default function ForgotPasswordComponent() {
             )}
           </div> 
           <div>
-              {completedSteps() === totalSteps() - 2 ? (
-                <div className="next-btn" style={{textAlign:"center",width:"30%", margin:"auto"}}>
-                  <Button
-                    onClick={handleSendOTP}
-                    className="button_theme"
-                  >
-                    Send OTP
-                  </Button>
-                </div>
-              ) : (
-                <div className="reset-btn"  style={{textAlign:"center",width:"30%", margin:"auto"}}>
-                  <Button
-                    onClick={handleChangePassword}
-                    className="button_theme"
-                  >
-                    Reset Password
-                  </Button>
-                </div>
-              )}
+              <div className={styles.actions}>
+                {completedSteps() === totalSteps() - 2 ? (
+                  <Button onClick={handleSendOTP}>Send OTP</Button>
+                ) : (
+                  <Button onClick={handleChangePassword}>Reset Password</Button>
+                )}
+              </div>
             </div>
         </div>
     </div>

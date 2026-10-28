@@ -3,7 +3,7 @@
 import { useState } from "react";
 import ChatBox from "./ChatBox";
 import styles from "./ChatWidget.module.scss";
-import { RiMessage2Line } from "react-icons/ri";
+import { MessageSquare } from "lucide-react";
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +17,7 @@ export default function ChatWidget() {
       {isOpen && <div className={styles.chatBoxWrapper}><ChatBox /></div>}
       
       <button className={styles.storyGeneratorBtn} onClick={toggleChat}>
-        <RiMessage2Line />
+        <MessageSquare size={20} aria-hidden="true" />
         <span>{isOpen ? "Close story generator" : "Generate your own story"}</span>
       </button>
     </div>

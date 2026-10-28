@@ -94,9 +94,17 @@
     
 }
 // Like and comment controls under the story title
+.likeButton,
+.commentToggle {
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+}
+
 .likeButton {
   margin-right: 10px;
-  cursor: pointer;
   transition: color var(--duration-base) var(--ease-standard);
 }
 
@@ -116,5 +124,4 @@
 .commentToggle {
   font-weight: var(--font-weight-bold);
   text-decoration: underline;
-  cursor: pointer;
 }

@@ -9,8 +9,15 @@
   width: 100% !important;
   margin: 20px;
 }
-.input_field {
-  margin-top: 10px;
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.actions {
+  display: flex;
+  justify-content: center;
+  padding-bottom: var(--space-3);
 }
 
 // The forgot-password card

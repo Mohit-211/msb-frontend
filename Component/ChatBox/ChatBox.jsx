@@ -1,11 +1,18 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import styles from "./ChatBox.module.scss";
-import { IoSend } from "react-icons/io5";
-import { AiFillSave } from "react-icons/ai";
-import { IoIosCopy } from "react-icons/io";
-import { Modal, Input, message, Skeleton, Dropdown, Menu } from "antd";
-import { PiSortAscendingFill } from "react-icons/pi";
+import { Copy, Save, SendHorizontal, SlidersHorizontal } from "lucide-react";
+import { Button } from "@/Component/ui/button/Button";
+import { Dialog, DialogClose, DialogContent, DialogFooter } from "@/Component/ui/dialog/Dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/Component/ui/dropdown-menu/DropdownMenu";
+import { Field, Input } from "@/Component/ui/field/Field";
+import { Skeleton, SkeletonText } from "@/Component/ui/skeleton/Skeleton";
+import { toast } from "@/Component/ui/toast/toast";
 import {
   AipromtApi,
   SaveStoryApi,
@@ -74,7 +81,7 @@ export default function ChatBox() {
       });
     } catch (error) {
       console.error("API Error:", error);
-      message.error("Failed to get response. Please try again later.");
+      toast.error("Failed to get response. Please try again later.");
       setMessages((prev) => prev.filter((msg) => !msg.loading));
     } finally {
       setLoading(false);
@@ -85,9 +92,9 @@ export default function ChatBox() {
     setActionLoadingIndex(index);
     try {
       await navigator.clipboard.writeText(text);
-      message.success("Message copied!");
+      toast.success("Message copied!");
     } catch {
-      message.error("Failed to copy.");
+      toast.error("Failed to copy.");
     } finally {
       setActionLoadingIndex(null);
     }
@@ -103,7 +110,7 @@ export default function ChatBox() {
 
   const handleSaveStory = async () => {
     if (!saveTitle.trim()) {
-      message.warning("Please enter a title.");
+      toast.warning("Please enter a title.");
       return;
     }
 
@@ -115,12 +122,12 @@ export default function ChatBox() {
 
     try {
       const response = await SaveStoryApi(formData, storedToken);
-      message.success(response?.data?.message || "Story saved successfully.");
+      toast.success(response?.data?.message || "Story saved successfully.");
       await dispatch(fetchStoryHistory(storedToken)).unwrap();
       resetState();
     } catch (error) {
       console.error("SaveStory API Error:", error);
-      message.error("Failed to save story.");
+      toast.error("Failed to save story.");
     }
   };
 
@@ -149,11 +156,11 @@ export default function ChatBox() {
         return updated;
       });
 
-      message.success("Story sorted successfully.");
+      toast.success("Story sorted successfully.");
       await dispatch(fetchStoryHistory(storedToken)).unwrap();
     } catch (error) {
       console.error("SortStory API Error:", error);
-      message.error("Failed to sort story.");
+      toast.error("Failed to sort story.");
     } finally {
       setActionLoadingIndex(null);
     }
@@ -203,11 +210,7 @@ export default function ChatBox() {
           >
             <div className={styles.message}>
               {msg.loading ? (
-                <Skeleton
-                  active
-                  paragraph={{ rows: 3 }}
-                  style={{ height: 100, width: 200 }}
-                />
+                <SkeletonText lines={3} label="Writing your story" className={styles.loadingText} />
               ) : (
                 <div dangerouslySetInnerHTML={{ __html: msg.text }} />
               )}
@@ -217,61 +220,50 @@ export default function ChatBox() {
                   "I am your story generator, please enter a story title." && (
                   <div className={styles.messageTopActions}>
                     {actionLoadingIndex === index ? (
-                      <div className={styles.icon}>
-                        <Skeleton.Input
-                          active
-                          size="small"
-                          style={{ width: 80 }}
-                        />
-                      </div>
+                      <Skeleton width="5rem" height="1.5rem" />
                     ) : (
                       <>
-                        <div
-                          className={styles.icon}
+                        <button
+                          type="button"
+                          className={styles.action}
                           onClick={() => handleCopy(msg.text, index)}
                         >
-                          <IoIosCopy /> Copy
-                        </div>
-                        <div
-                          className={styles.icon}
+                          <Copy size={16} aria-hidden="true" /> Copy
+                        </button>
+                        <button
+                          type="button"
+                          className={styles.action}
                           onClick={() => handleDownload(msg.text, index)}
                         >
-                          <AiFillSave /> Save
-                        </div>
-                        <Dropdown
-                          overlay={
-                            <Menu
-                              onClick={({ key }) => {
-                                if (key === "shorten") {
-                                  if (!msg.sortContent) {
-                                    handleSortStory(msg.text, index);
-                                  } else {
-                                    toggleStoryLength(index, "short");
-                                  }
-                                } else if (key === "elaborate") {
-                                  toggleStoryLength(index, "long");
+                          <Save size={16} aria-hidden="true" /> Save
+                        </button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button type="button" className={styles.action}>
+                              <SlidersHorizontal size={16} aria-hidden="true" /> Refine
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent>
+                            <DropdownMenuItem
+                              onSelect={() => {
+                                if (!msg.sortContent) {
+                                  handleSortStory(msg.text, index);
+                                } else {
+                                  toggleStoryLength(index, "short");
                                 }
                               }}
                             >
-                              {!msg.sortContent && (
-                                <Menu.Item key="shorten">Shorten</Menu.Item>
-                              )}
-                              {msg.sortContent && (
-                                <>
-                                  <Menu.Item key="shorten">Shorten</Menu.Item>
-                                  <Menu.Item key="elaborate">
-                                    Elaborate
-                                  </Menu.Item>
-                                </>
-                              )}
-                            </Menu>
-                          }
-                          trigger={["click"]}
-                        >
-                          <div className={styles.icon}>
-                            <PiSortAscendingFill /> Refine
-                          </div>
-                        </Dropdown>
+                              Shorten
+                            </DropdownMenuItem>
+                            {msg.sortContent && (
+                              <DropdownMenuItem
+                                onSelect={() => toggleStoryLength(index, "long")}
+                              >
+                                Elaborate
+                              </DropdownMenuItem>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </>
                     )}
                   </div>
@@ -287,30 +279,48 @@ export default function ChatBox() {
         <input
           type="text"
           placeholder="Enter story title..."
+          aria-label="Story title"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
         />
-        <button onClick={handleSend} disabled={loading}>
-          <IoSend />
+        <button
+          type="button"
+          onClick={handleSend}
+          disabled={loading}
+          aria-label="Generate story"
+        >
+          <SendHorizontal size={20} aria-hidden="true" />
         </button>
       </div>
 
-      {/* Save Modal */}
-      <Modal
-        title="Save Story"
-        open={showModal}
-        onOk={handleSaveStory}
-        onCancel={() => setShowModal(false)}
-        okText="Save"
-        cancelText="Cancel"
-      >
-        <Input
-          placeholder="Enter story title"
-          value={saveTitle}
-          onChange={(e) => setSaveTitle(e.target.value)}
-        />
-      </Modal>
+      {/* Save dialog */}
+      <Dialog open={showModal} onOpenChange={setShowModal}>
+        <DialogContent title="Save story" size="sm">
+          <form
+            className={styles.saveForm}
+            onSubmit={(event) => {
+              event.preventDefault();
+              handleSaveStory();
+            }}
+          >
+            <Field label="Title">
+              <Input
+                placeholder="Enter story title"
+                value={saveTitle}
+                onChange={(e) => setSaveTitle(e.target.value)}
+                autoFocus
+              />
+            </Field>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="ghost">Cancel</Button>
+              </DialogClose>
+              <Button type="submit">Save</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

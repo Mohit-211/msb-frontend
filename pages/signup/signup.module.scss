@@ -3,16 +3,16 @@
 .Signup {
   padding-top: var(--header-height);
 
+  // At least one screen tall below the header, and taller when the form needs it
   .Main {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    height: 88vh;
+    align-items: center;
+    min-height: calc(100vh - var(--header-height));
 
     .Left {
       width: 50%;
-      background-color: var(--color-primary);
-      // height: 100px;
     }
 
     .Right {
@@ -34,23 +34,13 @@
         font-size: 18px;
       }
     }
-    .input_container {
-      position: relative;
-      span {
-        position: absolute;
-        right: 10px;
-        top: 5px;
-        font-size: 12px;
-        font-weight: var(--font-weight-semibold);
-        cursor: pointer;
-      }
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
     }
-    .error_message {
-      padding-top: 5px;
-      color: var(--color-danger) !important;
-      text-align: left !important;
-      font-weight: var(--font-weight-medium);
-      font-size: 12px;
+    .SignUpBtn {
+      align-self: flex-start;
     }
   }
 
@@ -58,7 +48,7 @@
     padding-top: calc(var(--header-height) + var(--space-6));
 
     .Main {
-      height: 100% !important;
+      min-height: 0;
     }
     .Left {
       display: none;

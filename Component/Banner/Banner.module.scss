@@ -15,6 +15,9 @@
         padding: 20px;
         .left {
             width: 50%;
+            .title {
+                text-align: center;
+            }
             h3 {
                 color: var(--color-on-primary);
                 // font-family: SF Pro Display;

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Button, Form } from "react-bootstrap";
 import styles from "./OtpStep.module.scss";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { UserRegisterAPI } from "@/Constants/Api/Api";
-import DescriptionAlerts from "@/Constants/alert/alert";
 import { useRouter } from "next/router";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { Button } from "@/Component/ui/button/Button";
+import { Field, Input, PasswordInput } from "@/Component/ui/field/Field";
+import { toast } from "@/Component/ui/toast/toast";
 const CreateAccount = ({ formData, setFormData }) => {
   const router = useRouter();
   const navigate = router.replace;
@@ -14,7 +14,6 @@ const CreateAccount = ({ formData, setFormData }) => {
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const handlePhoneChange = (newPhone) => {
@@ -23,11 +22,6 @@ const CreateAccount = ({ formData, setFormData }) => {
 
   const strongPasswordRegex =
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
-
-  const [alert, setAlert] = useState(false);
-  const [alertConfig, setAlertConfig] = useState({
-    text: "",
-  });
 
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
@@ -57,16 +51,11 @@ const CreateAccount = ({ formData, setFormData }) => {
     }
   };
 
-  const handleCreateAccount = (event) => {
-    setAlert(false);
+  const handleCreateAccount = () => {
     UserRegisterAPI(name, formData.email, mobile, password, confirmPassword)
       .then((res) => {
         if (res.data === 200 || res.data.status === 200) {
-          setAlert(true);
-          setAlertConfig({
-            text: "User Created Successfully. Please Continue Your Journey",
-            icon: "success",
-          });
+          toast.success("User Created Successfully. Please Continue Your Journey");
           setTimeout(() => {
             navigate("/signin");
           }, 3000);
@@ -74,15 +63,8 @@ const CreateAccount = ({ formData, setFormData }) => {
       })
       .catch((error) => {
         console.log(error, "error");
-        if (error.response.status === 400) {
-          setAlert(true);
-          setAlertConfig({
-            text: error.response.data.message,
-            icon: "info",
-          });
-          setTimeout(() => {
-            setAlert(false);
-          }, 4000);
+        if (error?.response?.status === 400) {
+          toast.info(error.response.data.message);
         }
       });
   };
@@ -97,125 +79,76 @@ const CreateAccount = ({ formData, setFormData }) => {
     if (!confirmPassword) missingFields.push("Confirm Password");
 
     if (missingFields.length > 0) {
-      setAlert(true);
-      setAlertConfig({
-        icon: "info",
-        text: `Please fill in the following required fields: ${missingFields.join(
+      toast.info(
+        `Please fill in the following required fields: ${missingFields.join(
           ", "
-        )}.`,
-      });
-      setTimeout(() => {
-        setAlert(false);
-      }, 2000);
+        )}.`
+      );
     } else if (passwordError) {
-      setAlert(true);
-      setAlertConfig({
-        icon: "error",
-        text: passwordError,
-      });
-      setTimeout(() => {
-        setAlert(false);
-      }, 2000);
+      toast.error(passwordError);
     } else {
       handleCreateAccount();
     }
   };
 
-  const handleShowPass = () => setShowPassword((showPassword) => !showPassword);
-
-  const handleMouseDownPass = (event) => {
-    event.preventDefault();
-  };
   return (
-    <>
-      {alert ? (
-        <DescriptionAlerts text={alertConfig.text} icon={alertConfig.icon} />
-      ) : null}
-      <div className={styles.forgot_form}>
-        <div className={styles.forgot_form_container}>
-          <Form style={{ textAlign: "left" }}>
-            <Form.Group className="mb-3" controlId="formGroupEmail">
-              <Form.Label>Full Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter your Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter your email"
-                value={formData.email}
-                disabled
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-            <Form.Label>Phone Number</Form.Label>
-              <PhoneInput
-                country={"us"}
-                value={mobile}
-                onChange={handlePhoneChange}
-                disableDropdown={true}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Password </Form.Label>
-              <div className={styles.input_container}>
-                <Form.Control
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter Passsword"
-                  value={password}
-                  onChange={handlePasswordChange}
-                />
-                <span className="eyesHidden">
-                  <p onClick={handleShowPass} onMouseDown={handleMouseDownPass}>
-                    {showPassword ? (
-                      <AiFillEye size={25} />
-                    ) : (
-                      <AiFillEyeInvisible size={25} />
-                    )}
-                  </p>
-                </span>
-              </div>
-              {passwordError && (
-                <p className={styles.error_message}>{passwordError}</p>
-              )}
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Confirm Passsword</Form.Label>
-              <div className={styles.input_container}>
-                <Form.Control
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter confirm paassword"
-                  value={confirmPassword}
-                  onChange={handleConfirmPasswordChange}
-                />
-                <span className="eyesHidden">
-                  <p onClick={handleShowPass} onMouseDown={handleMouseDownPass}>
-                    {showPassword ? (
-                      <AiFillEye size={25} />
-                    ) : (
-                      <AiFillEyeInvisible size={25} />
-                    )}
-                  </p>
-                </span>
-              </div>
-              {confirmPasswordError && (
-                <p className={styles.error_message}>
-                  {confirmPasswordError}
-                </p>
-              )}
-            </Form.Group>
-          </Form>
-          <Button className={`button_theme ${styles.SignUpBtn}`} onClick={handleAlertSubmit}>
+    <div className={styles.forgot_form}>
+      <div className={styles.forgot_form_container}>
+        <form
+          className={styles.form}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleAlertSubmit();
+          }}
+        >
+          <Field label="Full Name">
+            <Input
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Field>
+          <Field label="Email">
+            <Input
+              type="email"
+              placeholder="Enter your email"
+              value={formData.email}
+              disabled
+              readOnly
+            />
+          </Field>
+          <Field id="create-account-phone" label="Phone Number">
+            <PhoneInput
+              country={"us"}
+              value={mobile}
+              onChange={handlePhoneChange}
+              disableDropdown={true}
+              inputProps={{ id: "create-account-phone" }}
+            />
+          </Field>
+          <Field label="Password" error={passwordError || undefined}>
+            <PasswordInput
+              placeholder="Enter a password"
+              value={password}
+              onChange={handlePasswordChange}
+              autoComplete="new-password"
+            />
+          </Field>
+          <Field label="Confirm Password" error={confirmPasswordError || undefined}>
+            <PasswordInput
+              placeholder="Enter the password again"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+              autoComplete="new-password"
+            />
+          </Field>
+          <Button type="submit" className={styles.SignUpBtn}>
             Continue
           </Button>
-        </div>
+        </form>
       </div>
-    </>
+    </div>
   );
 };
 export default CreateAccount;

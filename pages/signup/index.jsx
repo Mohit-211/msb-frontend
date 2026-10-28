@@ -1,14 +1,15 @@
 import React from "react";
-import { Button, Container, Form } from "react-bootstrap";
 import styles from "./signup.module.scss";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useState } from "react";
 import { UserRegisterAPI } from "@/Constants/Api/Api";
 import { useRouter } from "next/router";
-import DescriptionAlerts from "@/Constants/alert/alert";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import ImagesCom from "@/Component/images";
+import { Button } from "@/Component/ui/button/Button";
+import { Container } from "@/Component/ui/container/Container";
+import { Field, Input, PasswordInput } from "@/Component/ui/field/Field";
+import { toast } from "@/Component/ui/toast/toast";
 const SignUp = () => {
   const router = useRouter();
   const navigate = router.replace;
@@ -17,7 +18,6 @@ const SignUp = () => {
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
@@ -25,10 +25,6 @@ const SignUp = () => {
   const handlePhoneChange = (newPhone) => {
     setMobile(newPhone);
   };
-  const [alert, setAlert] = useState(false);
-  const [alertConfig, setAlertConfig] = useState({
-    text: "",
-  });
 
   const validateEmail = (input) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -83,11 +79,7 @@ const SignUp = () => {
     UserRegisterAPI(name, email, mobile, password, confirmPassword)
       .then((res) => {
         if (res.data === 200 || res.data.status === 200) {
-          setAlert(true);
-          setAlertConfig({
-            text: "User Created Successfully. Please Continue Your Journey",
-            icon: "success",
-          });
+          toast.success("User Created Successfully. Please Continue Your Journey");
           setTimeout(() => {
             navigate("/signin");
           }, 3000);
@@ -96,15 +88,8 @@ const SignUp = () => {
       .catch((error) => {
         console.log(error, "error");
 
-        if (error.response.status === 400) {
-          setAlert(true);
-          setAlertConfig({
-            text: error.response.data.message,
-            icon: "info",
-          });
-          setTimeout(() => {
-            setAlert(false);
-          }, 4000);
+        if (error?.response?.status === 400) {
+          toast.info(error.response.data.message);
         }
       });
   };
@@ -121,154 +106,94 @@ const SignUp = () => {
     if (!isEmailValid) missingFields.push("Invalid email format")
 
     if (missingFields.length > 0) {
-      setAlert(true);
-      setAlertConfig({
-        icon: "info",
-        text: `Please fill in the following required fields: ${missingFields.join(
+      toast.info(
+        `Please fill in the following required fields: ${missingFields.join(
           ", "
-        )}.`,
-      });
-      setTimeout(() => {
-        setAlert(false);
-      }, 2000);
+        )}.`
+      );
     } else if (passwordError) {
-      setAlert(true);
-      setAlertConfig({
-        icon: "error",
-        text: passwordError,
-      });
-      setTimeout(() => {
-        setAlert(false);
-      }, 2000);
+      toast.error(passwordError);
     } else {
       handleSubmit();
     }
   };
 
-  const handleShowPass = () => setShowPassword((showPassword) => !showPassword);
-
-  const handleMouseDownPass = (event) => {
-    event.preventDefault();
-  };
   return (
-    <>
-      {alert ? (
-        <DescriptionAlerts text={alertConfig.text} icon={alertConfig.icon} />
-      ) : null}
-      <Container className={styles.Signup}>
-        <div className={styles.Main}>
-          <div className={styles.Left}>
-          <ImagesCom/>
-
-          </div>
-          <div className={styles.Right}>
-            <div className={styles.form_inner}>
-              <h1>Sign up</h1>
-              <Form>
-                <Form.Group className="mb-3" controlId="formGroupEmail">
-                  <Form.Label>Full Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter your Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={handleEmailChange}
-                  />
-                  {emailError && (
-                    <p className={styles.error_message}>{emailError}</p>
-                  )}
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Phone Number</Form.Label>
-                  <PhoneInput
-                    country={"us"}
-                    value={mobile}
-                    onChange={handlePhoneChange}
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label>Password </Form.Label>
-                  <div className={styles.input_container}>
-                    <Form.Control
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter Passsword"
-                      value={password}
-                      onChange={handlePasswordChange}
-                    />
-                    <span className="eyesHidden">
-                      <p
-                        onClick={handleShowPass}
-                        onMouseDown={handleMouseDownPass}
-                      >
-                        {showPassword ? (
-                          <AiFillEye size={25} />
-                        ) : (
-                          <AiFillEyeInvisible size={25} />
-                        )}
-                      </p>
-                    </span>
-                  </div>
-                  {passwordError && (
-                    <p className={styles.error_message}>{passwordError}</p>
-                  )}
-                </Form.Group>{" "}
-                <Form.Group className="mb-3">
-                  <Form.Label>Confirm Passsword</Form.Label>
-                  <div className={styles.input_container}>
-                    <Form.Control
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter confirm paassword"
-                      value={confirmPassword}
-                      onChange={handleConfirmPasswordChange}
-                    />
-                    <span className="eyesHidden">
-                      <p
-                        onClick={handleShowPass}
-                        onMouseDown={handleMouseDownPass}
-                      >
-                        {showPassword ? (
-                          <AiFillEye size={25} />
-                        ) : (
-                          <AiFillEyeInvisible size={25} />
-                        )}
-                      </p>
-                    </span>
-                  </div>
-                  {confirmPasswordError && (
-                    <p className={styles.error_message}>
-                      {confirmPasswordError}
-                    </p>
-                  )}
-                </Form.Group>
-              </Form>
-              <Button className={`button_theme ${styles.SignUpBtn}`} onClick={handleAlertSubmit}>
+    <Container className={styles.Signup}>
+      <div className={styles.Main}>
+        <div className={styles.Left}>
+          <ImagesCom />
+        </div>
+        <div className={styles.Right}>
+          <div className={styles.form_inner}>
+            <h1>Sign up</h1>
+            <form
+              className={styles.form}
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleAlertSubmit();
+              }}
+            >
+              <Field label="Full Name">
+                <Input
+                  type="text"
+                  placeholder="Enter your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </Field>
+              <Field label="Email" error={emailError || undefined}>
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={handleEmailChange}
+                />
+              </Field>
+              <Field id="signup-phone" label="Phone Number">
+                <PhoneInput
+                  country={"us"}
+                  value={mobile}
+                  onChange={handlePhoneChange}
+                  inputProps={{ id: "signup-phone" }}
+                />
+              </Field>
+              <Field label="Password" error={passwordError || undefined}>
+                <PasswordInput
+                  placeholder="Enter a password"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  autoComplete="new-password"
+                />
+              </Field>
+              <Field label="Confirm Password" error={confirmPasswordError || undefined}>
+                <PasswordInput
+                  placeholder="Enter the password again"
+                  value={confirmPassword}
+                  onChange={handleConfirmPasswordChange}
+                  autoComplete="new-password"
+                />
+              </Field>
+              <Button type="submit" className={styles.SignUpBtn}>
                 Continue
               </Button>
-            </div>
-            <p className={styles.buttom_text}>
-              Already have an account?{" "}
-              <span
-                className={styles.signinLink}
-                onClick={() => {
-                  const path = "/signin";
-                  router.push(path);
-                }}
-              >
-                Sign in
-              </span>
-            </p>
+            </form>
           </div>
+          <p className={styles.buttom_text}>
+            Already have an account?{" "}
+            <span
+              className={styles.signinLink}
+              onClick={() => {
+                const path = "/signin";
+                router.push(path);
+              }}
+            >
+              Sign in
+            </span>
+          </p>
         </div>
-      </Container>
-    </>
+      </div>
+    </Container>
   );
 };
 export default SignUp;

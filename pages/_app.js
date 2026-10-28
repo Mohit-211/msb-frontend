@@ -1,12 +1,17 @@
-import NavSection from "@/Component/NavSection/NavSection";
-// Order matters: our base and the Bootstrap bridge must come after Bootstrap.
-import "bootstrap/dist/css/bootstrap.css";
+// globals.css comes first: component styles sit at zero specificity and must load after it.
 import "@/styles/globals.css";
-import "@/styles/legacy.css";
+import NavSection from "@/Component/NavSection/NavSection";
+import dynamic from "next/dynamic";
 import { Provider } from "react-redux";
 import store from "@/redux/store";
 import Head from "next/head";
 import { Image_URL } from "@/Constants/host";
+// Loads after the page so Radix Toast stays out of every page's first load;
+// toasts raised before it mounts wait in the store.
+const Toaster = dynamic(
+  () => import("@/Component/ui/toast/Toaster").then((mod) => mod.Toaster),
+  { ssr: false },
+);
 export default function App({ Component, pageProps }) {
   return (
     <>
@@ -25,6 +30,7 @@ export default function App({ Component, pageProps }) {
       <Provider store={store}>
         <NavSection />
         <Component {...pageProps} />
+        <Toaster />
       </Provider>
     </>
   );

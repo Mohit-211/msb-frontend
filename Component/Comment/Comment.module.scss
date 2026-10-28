@@ -1,33 +1,15 @@
 .Comments {
-    h4 {
-        font-weight: var(--font-weight-bold);
+    // New comment form at the top of the comments sheet
+    .newComment {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-3);
+        margin-bottom: var(--space-5);
     }
 
-    .butn_theme {
-        border-radius: var(--radius-md);
-        background: rgba(var(--color-primary-rgb), 0.50);
-        border: none !important;
-        padding: 3px 20px;
-        position: absolute;
-        top: 55px;
-        right: 0;
-        /* padding: 7px; */
-        margin: 10px;
+    .postButton {
+        align-self: flex-end;
     }
-
-    .scroll_comment {
-        max-height: calc(100vh - 100px);
-        /* Set max height for the list */
-        overflow-y: auto;
-    }
-
-    .scroll_comment {
-        -ms-overflow-style: none;
-        scroll-width: none;
-      }
-      .scroll_comment::-webkit-scrollbar {
-        display: none;
-      }
 
     .read_comments {
         padding: 20px 0px;
@@ -44,7 +26,6 @@
 
         .imagesss {
             border-radius: var(--radius-full);
-            // margin: 0px 5px;
         }
 
         .name {
@@ -55,8 +36,6 @@
                 font-size: 20px;
                 font-style: normal;
                 font-weight: var(--font-weight-semibold);
-                // line-height: 24px;
-                /* 120% */
                 text-transform: capitalize;
                 margin: 0;
             }
@@ -67,8 +46,6 @@
                 font-style: normal;
                 font-weight: var(--font-weight-normal);
                 margin: 0;
-                // line-height: 22px;
-                /* 137.5% */
             }
         }
 

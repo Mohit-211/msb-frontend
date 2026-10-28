@@ -367,7 +367,6 @@
 // Mobile Responsive
 @include bp.down(md) {
   .signinPage {
-    padding-top: 4.5rem;
     height: auto;
     min-height: 100vh;
     overflow: auto;

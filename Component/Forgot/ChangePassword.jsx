@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
-import {Form } from "react-bootstrap";
-import styles from  "./Forgot.module.scss";
+import styles from "./Forgot.module.scss";
+import { Field, Input, PasswordInput } from "@/Component/ui/field/Field";
 const ChangePassword = ({ formData, setFormData }) => {
   const [otp, setOtp] = useState("");
   const [passwordError, setPasswordError] = useState(false);
@@ -27,20 +27,12 @@ const ChangePassword = ({ formData, setFormData }) => {
   return (
     <div className={styles.forgot_form}>
       <div className={styles.forgot_form_container}>
-        <Form>
-        
-           <Form.Group className={styles.input_field}>
-          <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="text"
-              value={formData.email}
-              disabled
-              />
-          </Form.Group>
-            
-          <Form.Group className={styles.input_field}>
-            <Form.Label>Enter OTP</Form.Label>
-            <Form.Control
+        <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+          <Field label="Email">
+            <Input type="email" value={formData.email} disabled readOnly />
+          </Field>
+          <Field label="Enter OTP">
+            <Input
               type="number"
               placeholder="OTP"
               value={otp}
@@ -49,40 +41,34 @@ const ChangePassword = ({ formData, setFormData }) => {
                 setFormData({ ...formData, otp: e.target.value });  // Update formData with OTP
               }}
             />
-          </Form.Group>
-          <Form.Group className={styles.input_field}>
-          <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
+          </Field>
+          <Field
+            label="Password"
+            error={
+              passwordError
+                ? "Password must be at least 8 characters long and contain at least one uppercase letter, one special character, and one number."
+                : undefined
+            }
+          >
+            <PasswordInput
               placeholder="New Password"
               value={formData.password}
-              onChange={(e) =>handlePasswordChange(e.target.value)}
-              isInvalid={passwordError}
+              onChange={(e) => handlePasswordChange(e.target.value)}
+              autoComplete="new-password"
             />
-             {passwordError && (
-              <Form.Control.Feedback type="invalid">
-                Password must be at least 8 characters long and contain at least
-                one uppercase letter, one special character, and one number.
-              </Form.Control.Feedback>
-            )}
-          </Form.Group>
-          <Form.Group className={styles.input_field}>
-          <Form.Label>Confirm New Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder=" Confirm New Password"
+          </Field>
+          <Field
+            label="Confirm New Password"
+            error={passwordMatchError ? "Passwords do not match" : undefined}
+          >
+            <PasswordInput
+              placeholder="Confirm New Password"
               value={formData.confirmPassword}
               onChange={handleConfirmPassChange}
-              isInvalid={passwordMatchError}
+              autoComplete="new-password"
             />
-             {passwordMatchError && (
-              <Form.Control.Feedback type="invalid">
-                Passwords do not match
-              </Form.Control.Feedback>
-            )}
-          </Form.Group> 
-        
-        </Form>
+          </Field>
+        </form>
       </div>
     </div>
   );

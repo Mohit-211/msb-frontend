@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "react-bootstrap";
+import { Container } from "@/Component/ui/container/Container";
 import styles from "./otp.module.scss";
 import OtpStep from "@/Component/OtpStep/OtpStep";
 import { useRouter } from "next/router";

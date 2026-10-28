@@ -9,70 +9,62 @@
   width: 100% !important;
   margin: 20px;
 }
-.input_field {
-  margin-top: 10px;
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  text-align: left;
 }
 
+// Current step and its button
+.stepBody {
+  margin: var(--space-4) 0 var(--space-2);
+  padding-block: var(--space-2);
+}
+.stepActions {
+  display: flex;
+  justify-content: flex-end;
+}
 .forgot_form_button {
-  padding: 7px 10px;
-  margin-left: 0px;
   width: 100%;
-  text-align: center;
 }
-.error_message{
-  padding-top: 5px;
-  color: var(--color-danger) !important;
-  text-align: left !important;
-  font-weight: var(--font-weight-medium);
-  font-size: 12px;
+.SignUpBtn {
+  align-self: flex-start;
 }
 
-.input_container {
-  position: relative;
-  span {
-    position: absolute;
-    right: 10px;
-    top: 5px;
-    font-size: 12px;
-    font-weight: var(--font-weight-semibold);
-    cursor: pointer;
-  }
-}
-@include bp.down(sm) {
-  .forgot_form_button {
-    margin-top: 10px;
-    padding: 5px 10px;
-  }
-}
-@include bp.down(md) {
-  .forgot_form_container{
-    height: auto !important;
-    margin: 0px !important;
-    .SignUpBtn{
-      width: 100% !important;
-    }
-  }
-  .otpInput{
-    width: 40% !important;
-  }
-  .nextBtn{
-    width: 100% !important;
-    .forgot_form_button{
-      width: 100% !important;
-    }
-  }
+// Four one-digit boxes for the email code
+.otpInputs {
+  display: flex;
+  gap: var(--space-3);
 }
 
 .otpInput {
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: var(--text-xl);
+  text-align: center;
+  color: var(--color-text);
+  background-color: var(--color-surface);
   border: 2px solid var(--color-border-strong);
   border-radius: var(--radius-md);
-  background-color: var(--color-surface);
-  color: var(--color-text);
   transition: border-color var(--duration-base) var(--ease-standard);
 
   &:focus {
     border-color: var(--color-primary);
     outline: none;
     box-shadow: var(--ring-primary);
+  }
+}
+
+@include bp.down(md) {
+  .forgot_form_container {
+    height: auto !important;
+    margin: 0px !important;
+    .SignUpBtn {
+      width: 100% !important;
+    }
+  }
+  .nextBtn {
+    width: 100% !important;
   }
 }

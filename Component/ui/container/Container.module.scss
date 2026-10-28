@@ -1,0 +1,12 @@
+// Zero specificity, so a className passed to <Container> always wins.
+
+:where(.container) {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-gutter);
+}
+
+:where(.fluid) {
+  max-width: none;
+}

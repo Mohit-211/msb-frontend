@@ -1,27 +1,25 @@
 import React, { useCallback } from "react";
 import styles from "./BlogDetail.module.scss";
-import { Container, Offcanvas } from "react-bootstrap";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { Dot, ThumbsUp } from "lucide-react";
 import { LikeApi, getLocalStorageItem } from "@/Constants/Api/Api";
 import { Image_URL } from "@/Constants/host";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLike } from "@/redux/getlikeslice";
-import { RxDotFilled } from "react-icons/rx";
 import Comment from "../Comment/Comment";
 import { fetchComments } from "@/redux/getcommentSlice";
-import { AiFillLike } from "react-icons/ai";
+import { Container } from "@/Component/ui/container/Container";
+import { Dialog, DialogContent } from "@/Component/ui/dialog/Dialog";
 export default function BlogDetailComponent({ data }) {
-  console.log(data, "data");
   const router = useRouter();
   const { id } = router.query;
   const dispatch = useDispatch();
   const storedValue = getLocalStorageItem("UserLoginToken");
   const [show, setShow] = useState(false);
   const [likeclick, setLikeClick] = useState(false);
-  const handleClose = () => setShow(false);
   const handleShow = () => {
     setShow(true);
   };
@@ -83,7 +81,7 @@ export default function BlogDetailComponent({ data }) {
                   <h6>
                     By <b>Admin</b>
                     <span>
-                      <RxDotFilled />
+                      <Dot size={20} aria-hidden="true" />
                     </span>
                     <span>
                       Posted on{" "}
@@ -95,14 +93,17 @@ export default function BlogDetailComponent({ data }) {
                 </div>
                 <div>
                   <div>
-                    <span
+                    <button
+                      type="button"
                       className={`${styles.likeButton} ${
                         likeCount?.is_like === true ? styles.likeButtonActive : ""
                       }`}
                       onClick={handleLike}
+                      aria-label="Like this story"
+                      aria-pressed={likeCount?.is_like === true}
                     >
-                      <AiFillLike size={20} />
-                    </span>
+                      <ThumbsUp size={20} fill="currentColor" aria-hidden="true" />
+                    </button>
                     <span className={styles.likeCount}>
                       {likeCount?.total_likes}
                     </span>
@@ -120,15 +121,15 @@ export default function BlogDetailComponent({ data }) {
                           : "Like"}
                     </span>
                     &nbsp;|&nbsp;
-                    <span className={styles.commentToggle} onClick={handleShow}>
+                    <button type="button" className={styles.commentToggle} onClick={handleShow}>
                       {comments?.length}{" "}
                       {comments?.length === 1 ? "Comment" : "Comments"}
-                    </span>
-                    <Offcanvas placement="end" show={show} onHide={handleClose}>
-                      <Offcanvas.Body>
+                    </button>
+                    <Dialog open={show} onOpenChange={setShow}>
+                      <DialogContent side="right" title="Comments">
                         <Comment id={id} />
-                      </Offcanvas.Body>
-                    </Offcanvas>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                 </div>
               </div>

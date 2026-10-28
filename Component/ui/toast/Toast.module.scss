@@ -1,0 +1,120 @@
+// Toasts stack below the header, centered, clear of the chat button in the corner.
+
+.viewport {
+  position: fixed;
+  top: calc(var(--header-height) + var(--space-3));
+  left: 50%;
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: min(calc(100vw - var(--space-8)), 26rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  outline: none;
+  transform: translateX(-50%);
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.toast[data-state="open"] {
+  animation: toastIn var(--duration-moderate) var(--ease-emphasized);
+}
+
+.toast[data-state="closed"] {
+  animation: toastOut var(--duration-base) var(--ease-standard) forwards;
+}
+
+.toast[data-swipe="move"] {
+  transform: translateY(var(--radix-toast-swipe-move-y));
+}
+
+.toast[data-swipe="cancel"] {
+  transform: translateY(0);
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+
+.toast[data-swipe="end"] {
+  animation: toastSwipeOut var(--duration-base) var(--ease-standard) forwards;
+}
+
+.icon {
+  flex: none;
+  margin-top: 0.0625rem;
+}
+
+.success .icon {
+  color: var(--color-success);
+}
+
+.error .icon {
+  color: var(--color-danger);
+}
+
+.warning .icon {
+  color: var(--color-warning);
+}
+
+.info .icon {
+  color: var(--color-info);
+}
+
+.message {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+.close {
+  flex: none;
+  display: inline-flex;
+  margin: calc(var(--space-1) * -1) calc(var(--space-2) * -1) 0 0;
+  padding: var(--space-1);
+  color: var(--color-text-muted);
+  background: none;
+  border: 0;
+  border-radius: var(--radius-sm);
+  transition:
+    color var(--duration-base) var(--ease-standard),
+    background-color var(--duration-base) var(--ease-standard);
+
+  &:hover {
+    color: var(--color-text);
+    background-color: var(--color-bg-muted);
+  }
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem) scale(0.98);
+  }
+}
+
+@keyframes toastOut {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes toastSwipeOut {
+  from {
+    transform: translateY(var(--radix-toast-swipe-end-y));
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}

@@ -3,16 +3,16 @@
 .Otp {
     padding-top: var(--header-height);
 
+    // At least one screen tall below the header, and taller when the form needs it
     .Main {
         width: 100%;
         display: flex;
         justify-content: space-between;
-        height: 80vh;
+        align-items: center;
+        min-height: calc(100vh - var(--header-height));
 
         .Left {
             width: 50%;
-            background-color: var(--color-primary);
-            // height: 100px;
         }
 
         .Right {
@@ -44,7 +44,7 @@ p{
         padding-top: calc(var(--header-height) + var(--space-6));
 
         .Main{
-            height: 100% !important;
+            min-height: 0;
         }
         .Left {
             display: none;

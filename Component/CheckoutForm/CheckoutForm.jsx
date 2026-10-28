@@ -6,10 +6,10 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
-import "@fortawesome/fontawesome-free/css/all.css";
 import styles from "./CheckoutForm.module.scss";
 import { useEffect } from "react";
-import DescriptionAlerts from "@/Constants/alert/alert";
+import { CircleCheck, CircleX } from "lucide-react";
+import { toast } from "@/Component/ui/toast/toast";
 import CustomModal from "../Modal/Modal";
 import { getLocalStorageItem } from "@/Constants/Api/Api";
 import { API_URL } from "@/Constants/host";
@@ -20,11 +20,7 @@ function CheckoutForm() {
   const [price, setPrice] = useState();
   const [loading, setLoading] = useState(false);
   const [priceTypes, setPriceTypes] = useState([]);
-  const [alert, setAlert] = useState(false);
   const [modalShow, setModalShow] = useState(false);
-  const [alertConfig, setAlertConfig] = useState({
-    text: "",
-  });
   const handleModalOpen = (item) => {
     setPrice(item);
     setModalShow(true);
@@ -50,11 +46,7 @@ function CheckoutForm() {
           },
         });
       if (stripeError) {
-        setAlert(true);
-        setAlertConfig({
-          text: stripeError.message || "Card Details are Invalid",
-          icon: "error",
-        });
+        toast.error(stripeError.message || "Card Details are Invalid");
         setLoading(false);
         return;
       }
@@ -78,25 +70,13 @@ function CheckoutForm() {
       const { clientSecret } = responseData;
       const confirmPayment = await stripe.confirmCardPayment(clientSecret);
       if (confirmPayment.error) {
-        setAlert(true);
-        setAlertConfig({
-          text: confirmPayment.error.message,
-          icon: "error",
-        });
+        toast.error(confirmPayment.error.message);
       } else {
-        setAlert(true);
-        setAlertConfig({
-          text: "You have Successfully Subscribed",
-          icon: "success",
-        });
+        toast.success("You have Successfully Subscribed");
       }
       setLoading(false);
     } catch (error) {
-      setAlert(true);
-      setAlertConfig({
-        text: "An error occurred during payment processing",
-        icon: "error",
-      });
+      toast.error("An error occurred during payment processing");
       setLoading(false);
       console.error("Error creating subscription:", error);
     }
@@ -125,9 +105,6 @@ function CheckoutForm() {
   }, []);
   return (
     <>
-      {alert ? (
-        <DescriptionAlerts text={alertConfig.text} icon={alertConfig.icon} />
-      ) : null}
       <div>
         <div className={styles.pricing}>
           {priceTypes.map((item, index) => (
@@ -136,19 +113,19 @@ function CheckoutForm() {
               {item.recurring.interval}
               <ul className={styles.features}>
                 <li>
-                  <i className="fas fa-check-circle"></i> Unlimited Websites
+                  <CircleCheck size={18} className={styles.included} aria-hidden="true" /> Unlimited Websites
                 </li>
                 <li>
-                  <i className="fas fa-check-circle"></i> 1 User
+                  <CircleCheck size={18} className={styles.included} aria-hidden="true" /> 1 User
                 </li>
                 <li>
-                  <i className="fas fa-check-circle"></i> 100MB Space/website
+                  <CircleCheck size={18} className={styles.included} aria-hidden="true" /> 100MB Space/website
                 </li>
                 <li>
-                  <i className="fas fa-check-circle"></i> Continuous deployment
+                  <CircleCheck size={18} className={styles.included} aria-hidden="true" /> Continuous deployment
                 </li>
                 <li>
-                  <i className="fas fa-times-circle"></i> No priority support
+                  <CircleX size={18} className={styles.excluded} aria-hidden="true" /> No priority support
                 </li>
               </ul>
               <button onClick={() => handleModalOpen(item)}>Choose Plan</button>
