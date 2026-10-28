@@ -1,0 +1,51 @@
+// Zero specificity, so a className passed to <OtpInput> always wins.
+
+:where(.otpInput) {
+  display: flex;
+  gap: var(--space-3);
+}
+
+:where(.slot) {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  font-size: var(--text-xl);
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  transition:
+    border-color var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard);
+}
+
+:where(.active) {
+  border-color: var(--color-secondary);
+  box-shadow: var(--ring-secondary);
+}
+
+:where(.invalid) {
+  border-color: var(--color-danger);
+}
+
+:where(.disabled .slot) {
+  color: var(--color-text-muted);
+  background-color: var(--color-bg-muted);
+  border-color: var(--color-border);
+}
+
+:where(.caret) {
+  width: 2px;
+  height: 1.5rem;
+  background-color: var(--color-text);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}

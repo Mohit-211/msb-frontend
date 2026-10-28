@@ -1,14 +1,14 @@
-// Fails when a stylesheet or inline style hard-codes a value that has a design token in styles/globals.css,
-// or when code reaches for a UI library other than Component/ui, Radix and lucide-react.
+// Fails when a stylesheet or inline style hard-codes a value that has a design token in src/styles/globals.css,
+// or when code reaches for a UI library other than components/ui, Radix and lucide-react.
 // Run with `npm run lint:tokens`.
 import { execSync } from "node:child_process";
 import { readFileSync, existsSync } from "node:fs";
 
-const TOKEN_SOURCE = "styles/globals.css";
-const BREAKPOINT_SOURCE = "styles/_breakpoints.scss";
+const TOKEN_SOURCE = "src/styles/globals.css";
+const BREAKPOINT_SOURCE = "src/styles/_breakpoints.scss";
 const NAMED_COLOR = /(?<![\w-])(white|black|red|blue|green|yellow|orange|purple|pink|gr[ae]y)(?![\w-])/i;
 const COLOR_PROPERTY = /^(color|background(-color)?|border(-(top|right|bottom|left))?(-color)?|outline(-color)?|fill|stroke|box-shadow|text-shadow|caret-color)$/;
-// The UI libraries Component/ui replaced; none may come back.
+// The UI libraries components/ui replaced; none may come back.
 const OTHER_UI_LIBRARY = /(from\s+|import\s+|require\()["'](antd|react-bootstrap|bootstrap|@mui\/[\w-]+|@emotion\/[\w-]+|sweetalert2|react-icons|@fortawesome\/[\w-]+)(\/[^"']*)?["']/;
 const BOOTSTRAP_CLASS = /className=["'][^"']*\b(m[tbsexy]?-[0-5]|p[tbsexy]?-[0-5]|btn(-[a-z]+)?|form-(control|group|label|select|check)|container(-fluid)?|row|col(-[a-z0-9]+)*)\b/;
 
@@ -41,8 +41,8 @@ for (const file of files.filter((f) => /\.(jsx?|tsx?)$/.test(f))) {
       report(file, i + 1, "color in inline style: use a class or var(--color-*)", raw);
     }
     if (/<[a-z]+[^>]*\sclass=["']/.test(raw)) report(file, i + 1, "use className, not class", raw);
-    if (OTHER_UI_LIBRARY.test(raw)) report(file, i + 1, "UI library: use Component/ui, Radix or lucide-react", raw);
-    if (BOOTSTRAP_CLASS.test(raw)) report(file, i + 1, "Bootstrap class: use Component/ui or a module class", raw);
+    if (OTHER_UI_LIBRARY.test(raw)) report(file, i + 1, "UI library: use components/ui, Radix or lucide-react", raw);
+    if (BOOTSTRAP_CLASS.test(raw)) report(file, i + 1, "Bootstrap class: use components/ui or a module class", raw);
   });
 }
 
