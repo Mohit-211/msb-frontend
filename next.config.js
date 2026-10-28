@@ -1,6 +1,12 @@
+const path = require("path");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  sassOptions: {
+    // lets every module `@use "breakpoints"` from styles/
+    includePaths: [path.join(__dirname, "styles")],
+  },
   images: {
     remotePatterns: [
       {
@@ -10,21 +16,9 @@ const nextConfig = {
     ],
     unoptimized: true,
   },
-  webpack(config, options) {
-    config.module.rules.push({
-      test: /\.(mov|mp4|webm)$/,
-      use: [
-        {
-          loader: 'file-loader',
-          options: {
-            publicPath: '/_next',
-            name: 'videos/[name].[ext]',
-          },
-        },
-      ],
-    });
-
-    return config;
+  async redirects() {
+    // pages/home was removed; keep old links working
+    return [{ source: "/home", destination: "/story/all", permanent: false }];
   },
 };
 

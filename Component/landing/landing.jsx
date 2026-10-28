@@ -16,12 +16,9 @@ import {
   MessageCircle,
 } from "lucide-react";
 import styles from "./landing.module.scss";
-import { Video_URL } from "@/Constants/host";
 import { Card, CardContent } from "../ui/card/Card";
 import NavBar from "../NavSection/NavSection";
 
-const path =
-  `${Video_URL}Animated_Logo_mystorybank.mp4`;
 const homeVideoPath = "/assets/homeVideo.mp4";
 const secondVideoPath = "/assets/secondVideo.mp4";
 const thirdVideoPath = "/assets/thirdVideo.mp4";

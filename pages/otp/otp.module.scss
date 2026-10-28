@@ -1,4 +1,8 @@
+@use "breakpoints" as bp;
+
 .Otp {
+    padding-top: var(--header-height);
+
     .Main {
         width: 100%;
         display: flex;
@@ -7,7 +11,7 @@
 
         .Left {
             width: 50%;
-            background-color: #EE2325;
+            background-color: var(--color-primary);
             // height: 100px;
         }
 
@@ -20,8 +24,8 @@
                 margin: auto;
 p{
     text-align: right;
-    font-weight: bolder;
-    color: #696969;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-secondary);
 }
                 h1 {
                     text-align: center;
@@ -36,7 +40,9 @@ p{
         }
 
     }
-    @media (max-width: 767px) {
+    @include bp.down(md) {
+        padding-top: calc(var(--header-height) + var(--space-6));
+
         .Main{
             height: 100% !important;
         }
@@ -53,4 +59,13 @@ p{
             }
         }
     }
+}
+.signinLink {
+  color: var(--color-link);
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-link-hover);
+  }
 }

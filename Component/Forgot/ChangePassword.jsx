@@ -1,5 +1,4 @@
 import React from "react";
-import { useEffect } from "react";
 import { useState } from "react";
 import {Form } from "react-bootstrap";
 import styles from  "./Forgot.module.scss";
@@ -61,7 +60,7 @@ const ChangePassword = ({ formData, setFormData }) => {
               isInvalid={passwordError}
             />
              {passwordError && (
-              <Form.Control.Feedback type="invalid" style={{ color: "red" }}>
+              <Form.Control.Feedback type="invalid">
                 Password must be at least 8 characters long and contain at least
                 one uppercase letter, one special character, and one number.
               </Form.Control.Feedback>
@@ -77,7 +76,7 @@ const ChangePassword = ({ formData, setFormData }) => {
               isInvalid={passwordMatchError}
             />
              {passwordMatchError && (
-              <Form.Control.Feedback type="invalid" style={{ color: "red" }}>
+              <Form.Control.Feedback type="invalid">
                 Passwords do not match
               </Form.Control.Feedback>
             )}

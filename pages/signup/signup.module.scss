@@ -1,5 +1,7 @@
+@use "breakpoints" as bp;
+
 .Signup {
-  // margin: 40px 0px;
+  padding-top: var(--header-height);
 
   .Main {
     width: 100%;
@@ -9,7 +11,7 @@
 
     .Left {
       width: 50%;
-      background-color: #ee2325;
+      background-color: var(--color-primary);
       // height: 100px;
     }
 
@@ -39,20 +41,22 @@
         right: 10px;
         top: 5px;
         font-size: 12px;
-        font-weight: 600;
+        font-weight: var(--font-weight-semibold);
         cursor: pointer;
       }
     }
     .error_message {
       padding-top: 5px;
-      color: red !important;
+      color: var(--color-danger) !important;
       text-align: left !important;
-      font-weight: 500;
+      font-weight: var(--font-weight-medium);
       font-size: 12px;
     }
   }
 
-  @media (max-width: 767px) {
+  @include bp.down(md) {
+    padding-top: calc(var(--header-height) + var(--space-6));
+
     .Main {
       height: 100% !important;
     }
@@ -74,5 +78,15 @@
         margin-top: 20px;
       }
     }
+  }
+}
+
+.signinLink {
+  color: var(--color-link);
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--color-link-hover);
   }
 }

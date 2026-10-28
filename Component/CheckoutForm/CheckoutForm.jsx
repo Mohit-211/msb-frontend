@@ -6,23 +6,20 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
+import "@fortawesome/fontawesome-free/css/all.css";
 import styles from "./CheckoutForm.module.scss";
 import { useEffect } from "react";
 import DescriptionAlerts from "@/Constants/alert/alert";
 import CustomModal from "../Modal/Modal";
-import { Button } from "react-bootstrap";
 import { getLocalStorageItem } from "@/Constants/Api/Api";
 import { API_URL } from "@/Constants/host";
 const stripePromise = loadStripe(
   "pk_test_51MdIF9SJPxqRN9bb510qJMORkThvx0ZipxzG5nyu4d5WmEE2KHnAt1SC4HEwtTw05G2pAFLts5kvGPyXZ6fWTKSZ00Wt2Als23"
 );
 function CheckoutForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [price, setPrice] = useState();
   const [loading, setLoading] = useState(false);
   const [priceTypes, setPriceTypes] = useState([]);
-  const [selectedPrice, setSelectedPrice] = useState("");
   const [alert, setAlert] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [alertConfig, setAlertConfig] = useState({
@@ -33,18 +30,8 @@ function CheckoutForm() {
     setModalShow(true);
   };
   const storedValue = getLocalStorageItem("UserLoginToken");
-  const [errors, setErrors] = useState();
   const stripe = useStripe();
   const elements = useElements();
-  const validateForm = () => {
-    const newErrors = {};
-    if (!name) newErrors.name = "Name is required";
-    if (!email) newErrors.email = "Email is required";
-    if (!selectedPrice) newErrors.price_id = "Please Select a price type!";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-  const card = elements?.getElement(CardElement);
   const createSubscription = async (name, email, priceId) => {
     setLoading(true);
     try {
@@ -149,19 +136,19 @@ function CheckoutForm() {
               {item.recurring.interval}
               <ul className={styles.features}>
                 <li>
-                  <i class="fas fa-check-circle"></i> Unlimited Websites
+                  <i className="fas fa-check-circle"></i> Unlimited Websites
                 </li>
                 <li>
-                  <i class="fas fa-check-circle"></i> 1 User
+                  <i className="fas fa-check-circle"></i> 1 User
                 </li>
                 <li>
-                  <i class="fas fa-check-circle"></i> 100MB Space/website
+                  <i className="fas fa-check-circle"></i> 100MB Space/website
                 </li>
                 <li>
-                  <i class="fas fa-check-circle"></i> Continuous deployment
+                  <i className="fas fa-check-circle"></i> Continuous deployment
                 </li>
                 <li>
-                  <i class="fas fa-times-circle"></i> No priority support
+                  <i className="fas fa-times-circle"></i> No priority support
                 </li>
               </ul>
               <button onClick={() => handleModalOpen(item)}>Choose Plan</button>

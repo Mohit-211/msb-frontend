@@ -1,100 +1,27 @@
+@use "breakpoints" as bp;
 
 .forgot_form {
   display: flex;
   justify-content: center;
   align-items: center;
-  .MuiTypography-root {
-    margin: 0 !important;
-  }
-  }
-  .forgot_form_container {
-    width: 100% !important;
-    margin: 20px;
-  }
-  .form-check-input:checked {
-    border: none !important;
-    background-color: var(--primary) !important;
-  }
-  .form-label {
-    margin: 10px 0 0 0;
-  }
-  .forgot {
-    text-align: center;
-    margin: 3px;
-    font-weight: 700;
-    color: black;
-  }
-  .continue {
-    text-align: center;
-    margin: 5px;
-    margin-top: 20px;
-    font-weight: 700;
-    color: black;
-  }
-  .social_icon {
-    text-align: center;
-
-    margin-bottom: 20px;
-    .fbIcon,
-    .googleIcon {
-      margin: 5px;
-      width: 30px;
-      height: 30px;
-    }
-  }
-  .input_field {
-    margin-top: 10px;
-  }
-  .input_field_remember {
-    margin-top: 5px;
-    color: black;
-  }
-  .procced-btn ,.next-btn,.reset-btn{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .forgot_form_button {
-      padding: 10px;
-      width: 35%;
-      background-color: var(--primary);
-      h6 {
-        margin: 0;
-      }
-    }
-    }
-
-.MuiBox-root {
-  padding: 0 !important;
+}
+.forgot_form_container {
+  width: 100% !important;
+  margin: 20px;
+}
+.input_field {
+  margin-top: 10px;
 }
 
-.forgot_form_button {
-  // margin-top: 20px;
-  // margin-bottom: 20px;
-  padding: 7px 10px;
-  margin-left: 0px;
-  width: 100%;
-  text-align: center;
-}
-.forgot_form_bottom {
-  margin-top: 24px;
-  display: flex;
-  justify-content: center;
+// The forgot-password card
+.forgotCard {
+  width: 40%;
+  margin: calc(var(--header-height) + var(--space-8)) auto var(--space-8);
+  padding: 10px;
+  border-radius: var(--radius-lg);
+  background-color: var(--color-primary-100);
 
-  h5 {
-    font-weight: 700;
-    font-size: 17px;
-  }
-  .link {
-    text-decoration: none;
-    color: var(--primary);
+  @include bp.down(md) {
+    width: 90%;
   }
 }
-@media (max-width: 400px) {
-  .forgot_form_button {
-    margin-top: 10px;
-    // margin-bottom: 20px;
-    padding: 5px 10px;
-  }
-}
-

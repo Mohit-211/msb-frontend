@@ -1,6 +1,4 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
 import SendOtp from "./SendOtp";
 import ChangePassword from "./ChangePassword";
 import { useState } from "react";
@@ -8,8 +6,8 @@ import { Button } from "react-bootstrap";
 import { useCallback } from "react";
 import { useRouter } from "next/router";
 import DescriptionAlerts from "@/Constants/alert/alert";
-import { ForgetSendOTPAPI, ForgotPassword, SendOTPAPI } from "@/Constants/Api/Api";
-import styles from  "./Forgot.module.scss";
+import { ForgetSendOTPAPI, ForgotPassword } from "@/Constants/Api/Api";
+import styles from "./Forgot.module.scss";
 const steps = ["Create an ad group", "Create an ad"];
 export default function ForgotPasswordComponent() {
   const router =useRouter()
@@ -151,7 +149,7 @@ export default function ForgotPasswordComponent() {
   };
 
   return (
-    <div className="forgot_form-1">
+    <div className={styles.forgotCard}>
       {alert && (
         <DescriptionAlerts
           text={alertConfig.text}

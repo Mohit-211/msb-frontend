@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import styles from "./OtpStep.module.scss";
 import PhoneInput from "react-phone-input-2";
@@ -11,7 +11,6 @@ const CreateAccount = ({ formData, setFormData }) => {
   const router = useRouter();
   const navigate = router.replace;
   const [name, setName] = useState("");
-  // const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -60,26 +59,6 @@ const CreateAccount = ({ formData, setFormData }) => {
 
   const handleCreateAccount = (event) => {
     setAlert(false);
-    // if (!agree) {
-    //   setAlertConfig({
-    //     text: "Please agree to the terms and conditions to submit the form.",
-    //     icon: "info",
-    //   });
-    //   setTimeout(() => {
-    //     setAlert(false);
-    //   }, 7000);
-    //   return;
-    // }
-    // const getToken = localStorage.getItem("UserOtpToken");
-    // event.preventDefault();
-    // const formDataImage = new FormData();
-    // formDataImage.append("image", selectedImage);
-    // if (setIsLoading === true) {
-    //   setAlertConfig({
-    //     text: "Your request is Submitted Please Wait for response",
-    //     icon: "success",
-    //   });
-    // }
     UserRegisterAPI(name, formData.email, mobile, password, confirmPassword)
       .then((res) => {
         if (res.data === 200 || res.data.status === 200) {
@@ -103,7 +82,6 @@ const CreateAccount = ({ formData, setFormData }) => {
           });
           setTimeout(() => {
             setAlert(false);
-            // navigate("/send/otp");
           }, 4000);
         }
       });

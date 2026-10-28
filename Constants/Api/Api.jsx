@@ -1,16 +1,8 @@
 import axios from "axios";
 import https from "https";
 import { jwtDecode } from "jwt-decode";
-import moment from "moment";
 import { API_URL } from "@/Constants/host";
 const BASE_URL = API_URL;
-// export const getLocalStorageItem = (key) => {
-//   if (typeof window !== 'undefined') {
-//     return localStorage.getItem(key);
-//     // return null
-//   }
-//   return null;
-// };
 const isJwtToken = (token) => {
   const jwtPattern = /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/;
   return jwtPattern.test(token);
@@ -39,20 +31,6 @@ export const removeLocalStorageItem = (key) => {
   return null;
 };
 const storedValue = getLocalStorageItem("UserLoginToken");
-// ************CheckToken API****************
-// export const CheckToken = async (value) => {
-//   try {
-//     const response = await axios.get(`${BASE_URL}/auth/checkTokenStatus`, {
-//       headers: {
-//         "x-access-token": value,
-//       },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     console.error("API response error:", error);
-//     throw error;
-//   }
-// };
 // ************SEND OTP API****************
 export const SendOTPAPI = async (value1) => {
   let config = {
@@ -120,11 +98,13 @@ export const UserLoginAPI = async (value1, value2) => {
 };
 // ************User Logout API****************
 export const UserLogOutAPI = async () => {
+  // Empty body first: axios.post takes (url, data, config). Read the token now, not at page load.
   return await axios.post(
     `${BASE_URL}/auth/logout`,
+    {},
     {
       headers: {
-        "x-access-token": storedValue,
+        "x-access-token": getLocalStorageItem("UserLoginToken"),
       },
     }
   );
@@ -216,18 +196,6 @@ export const ForgotPassword = async (value1, value2, value3, value4) => {
     `${BASE_URL}/auth/forgot-password`,
     config
   );
-};
-// ************Get Blog API****************
-export const GetBlog = async () => {
-  try {
-    const response = await axios.get(
-      `${BASE_URL}/blog/getAllBlogs`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("API response error:", error);
-    throw error;
-  }
 };
 axios.defaults.httpsAgent = new https.Agent({
   rejectUnauthorized: false,
@@ -325,66 +293,6 @@ export const GetComment = async (id, token) => {
     throw error;
   }
 };
-// ************Search API****************
-export const SearchAPI = async (value) => {
-  try {
-    const response = await axios.get(
-      `${BASE_URL}/user/blog/search?query=${value}`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("API response error:", error);
-    throw error;
-  }
-};
-
-// ************Home Section1 API****************
-export const Section1Api = async () => {
-  try {
-    const response = await axios.get(
-      `${BASE_URL}/content/getAllSectionContent`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("API response error:", error);
-    throw error;
-  }
-};
-
-export const BannerApi = async () => {
-  try {
-    const response = await axios.get(
-      `${BASE_URL}/content/getAllBannerContent`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("API response error:", error);
-    throw error;
-  }
-};
-export const CardContentApi = async () => {
-  try {
-    const response = await axios.get(
-      `${BASE_URL}/content/getAllCardContent`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("API response error:", error);
-    throw error;
-  }
-};
-
-export const FooterContentApi = async () => {
-  try {
-    const response = await axios.get(
-      `${BASE_URL}/content/getAllSocialLogin`
-    );
-    return response.data;
-  } catch (error) {
-    console.error("API response error:", error);
-    throw error;
-  }
-};
 // Generate story
 export const AipromtApi = async (formdata, token) => {
   return await axios.post(
@@ -417,18 +325,6 @@ export const SortStoryApi = async (formdata, token) => {
   return await axios.post(
     `${BASE_URL}/story/sort`,
     formdata,
-    {
-      headers: {
-        "x-access-token": token,
-      },
-    }
-  );
-};
-// get history
-export const AipromtHistoryApi = async (token) => {
-  return await axios.get(
-    `${BASE_URL}/story`,
-
     {
       headers: {
         "x-access-token": token,

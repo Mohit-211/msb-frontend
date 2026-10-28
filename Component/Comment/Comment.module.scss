@@ -1,11 +1,11 @@
 .Comments {
     h4 {
-        font-weight: 700;
+        font-weight: var(--font-weight-bold);
     }
 
     .butn_theme {
-        border-radius: 8px;
-        background: rgba(200, 35, 44, 0.50);
+        border-radius: var(--radius-md);
+        background: rgba(var(--color-primary-rgb), 0.50);
         border: none !important;
         padding: 3px 20px;
         position: absolute;
@@ -34,16 +34,16 @@
         margin: 10px;
 
         p {
-            color: #4F4F4F;
+            color: var(--color-text-secondary);
             font-size: 15px;
             font-style: normal;
-            font-weight: 600;
+            font-weight: var(--font-weight-semibold);
             margin: 10px 10px;
 
         }
 
         .imagesss {
-            border-radius: 100px;
+            border-radius: var(--radius-full);
             // margin: 0px 5px;
         }
 
@@ -51,10 +51,10 @@
             margin: 0px 10px;
 
             h5 {
-                color: rgba(51, 51, 51, 0.80);
+                color: var(--color-text-secondary);
                 font-size: 20px;
                 font-style: normal;
-                font-weight: 600;
+                font-weight: var(--font-weight-semibold);
                 // line-height: 24px;
                 /* 120% */
                 text-transform: capitalize;
@@ -62,10 +62,10 @@
             }
 
             h6 {
-                color: rgba(51, 51, 51, 0.60);
+                color: var(--color-text-muted);
                 font-size: 16px;
                 font-style: normal;
-                font-weight: 400;
+                font-weight: var(--font-weight-normal);
                 margin: 0;
                 // line-height: 22px;
                 /* 137.5% */

@@ -64,12 +64,12 @@ export default function ChatBox() {
         const filtered = prev.filter(
           (msg) =>
             msg.text !==
-            "I am your story generator, please enter a story title."
+            "I am your story generator, please enter a story title.",
         );
         return filtered.map((msg, idx, arr) =>
           idx === arr.length - 1 && msg.loading
             ? { from: "bot", text: botText }
-            : msg
+            : msg,
         );
       });
     } catch (error) {
@@ -115,9 +115,7 @@ export default function ChatBox() {
 
     try {
       const response = await SaveStoryApi(formData, storedToken);
-      message.success(
-        response?.data?.message || "Story saved successfully."
-      );
+      message.success(response?.data?.message || "Story saved successfully.");
       await dispatch(fetchStoryHistory(storedToken)).unwrap();
       resetState();
     } catch (error) {
@@ -136,10 +134,8 @@ export default function ChatBox() {
 
     try {
       const response = await SortStoryApi(formData, storedToken);
-      const sortText =
-        response?.data?.data?.sortContent || "No sort content.";
-      const longText =
-        response?.data?.data?.longContent || "No long content.";
+      const sortText = response?.data?.data?.sortContent || "No sort content.";
+      const longText = response?.data?.data?.longContent || "No long content.";
 
       setMessages((prev) => {
         const updated = [...prev];
@@ -206,8 +202,6 @@ export default function ChatBox() {
             }`}
           >
             <div className={styles.message}>
-             
-
               {msg.loading ? (
                 <Skeleton
                   active
@@ -217,73 +211,76 @@ export default function ChatBox() {
               ) : (
                 <div dangerouslySetInnerHTML={{ __html: msg.text }} />
               )}
-            {msg.from === "bot" &&
-  !msg.loading &&
-  msg.text !==
-    "I am your story generator, please enter a story title." && (
-    <div className={styles.messageTopActions}>
-      {actionLoadingIndex === index ? (
-        <div className={styles.icon}>
-          <Skeleton.Input active size="small" style={{ width: 80 }} />
-        </div>
-      ) : (
-        <>
-          <div
-            className={styles.icon}
-            onClick={() => handleCopy(msg.text, index)}
-          >
-            <IoIosCopy /> Copy
-          </div>
-          <div
-            className={styles.icon}
-            onClick={() => handleDownload(msg.text, index)}
-          >
-            <AiFillSave /> Save
-          </div>
-          <Dropdown
-            overlay={
-              <Menu
-                onClick={({ key }) => {
-                  if (key === "shorten") {
-                    if (!msg.sortContent) {
-                      handleSortStory(msg.text, index);
-                    } else {
-                      toggleStoryLength(index, "short");
-                    }
-                  } else if (key === "elaborate") {
-                    toggleStoryLength(index, "long");
-                  }
-                }}
-              >
-                {!msg.sortContent && (
-                  <Menu.Item key="shorten">Shorten</Menu.Item>
+              {msg.from === "bot" &&
+                !msg.loading &&
+                msg.text !==
+                  "I am your story generator, please enter a story title." && (
+                  <div className={styles.messageTopActions}>
+                    {actionLoadingIndex === index ? (
+                      <div className={styles.icon}>
+                        <Skeleton.Input
+                          active
+                          size="small"
+                          style={{ width: 80 }}
+                        />
+                      </div>
+                    ) : (
+                      <>
+                        <div
+                          className={styles.icon}
+                          onClick={() => handleCopy(msg.text, index)}
+                        >
+                          <IoIosCopy /> Copy
+                        </div>
+                        <div
+                          className={styles.icon}
+                          onClick={() => handleDownload(msg.text, index)}
+                        >
+                          <AiFillSave /> Save
+                        </div>
+                        <Dropdown
+                          overlay={
+                            <Menu
+                              onClick={({ key }) => {
+                                if (key === "shorten") {
+                                  if (!msg.sortContent) {
+                                    handleSortStory(msg.text, index);
+                                  } else {
+                                    toggleStoryLength(index, "short");
+                                  }
+                                } else if (key === "elaborate") {
+                                  toggleStoryLength(index, "long");
+                                }
+                              }}
+                            >
+                              {!msg.sortContent && (
+                                <Menu.Item key="shorten">Shorten</Menu.Item>
+                              )}
+                              {msg.sortContent && (
+                                <>
+                                  <Menu.Item key="shorten">Shorten</Menu.Item>
+                                  <Menu.Item key="elaborate">
+                                    Elaborate
+                                  </Menu.Item>
+                                </>
+                              )}
+                            </Menu>
+                          }
+                          trigger={["click"]}
+                        >
+                          <div className={styles.icon}>
+                            <PiSortAscendingFill /> Refine
+                          </div>
+                        </Dropdown>
+                      </>
+                    )}
+                  </div>
                 )}
-                {msg.sortContent && (
-                  <>
-                    <Menu.Item key="shorten">Shorten</Menu.Item>
-                    <Menu.Item key="elaborate">Elaborate</Menu.Item>
-                  </>
-                )}
-              </Menu>
-            }
-            trigger={["click"]}
-          >
-            <div className={styles.icon}>
-              <PiSortAscendingFill /> Refine
-            </div>
-          </Dropdown>
-        </>
-      )}
-    </div>
-)}
-
             </div>
           </div>
         ))}
         <div ref={messagesEndRef} />
       </div>
-
-    
 
       {/* Input */}
       <div className={styles.inputBox}>
@@ -295,7 +292,7 @@ export default function ChatBox() {
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
         />
         <button onClick={handleSend} disabled={loading}>
-          <IoSend color="#C8232C" />
+          <IoSend />
         </button>
       </div>
 

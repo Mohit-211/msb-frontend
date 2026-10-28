@@ -1,7 +1,6 @@
 import React from "react";
-import { Button, Container, Form, Image } from "react-bootstrap";
+import { Button, Container, Form } from "react-bootstrap";
 import styles from "./signup.module.scss";
-import Link from "next/link";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useState } from "react";
@@ -81,27 +80,6 @@ const SignUp = () => {
   };
 
   const handleSubmit = (event) => {
-    // if (!agree) {
-    //   setAlert(true);
-    //   setAlertConfig({
-    //     text: "Please agree to the terms and conditions to submit the form.",
-    //     icon: "info",
-    //   });
-    //   setTimeout(() => {
-    //     setAlert(false);
-    //   }, 7000);
-    //   return;
-    // }
-    // const getToken = localStorage.getItem("UserOtpToken");
-    // event.preventDefault();
-    // const formDataImage = new FormData();
-    // formDataImage.append("image", selectedImage);
-    // if (setIsLoading === true) {
-    //   setAlertConfig({
-    //     text: "Your request is Submitted Please Wait for response",
-    //     icon: "success",
-    //   });
-    // }
     UserRegisterAPI(name, email, mobile, password, confirmPassword)
       .then((res) => {
         if (res.data === 200 || res.data.status === 200) {
@@ -126,7 +104,6 @@ const SignUp = () => {
           });
           setTimeout(() => {
             setAlert(false);
-            // navigate("/send/otp");
           }, 4000);
         }
       });
@@ -279,11 +256,7 @@ const SignUp = () => {
             <p className={styles.buttom_text}>
               Already have an account?{" "}
               <span
-                style={{
-                  color: "blue",
-                  textDecoration: "underline",
-                  cursor: "pointer",
-                }}
+                className={styles.signinLink}
                 onClick={() => {
                   const path = "/signin";
                   router.push(path);

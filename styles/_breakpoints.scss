@@ -1,0 +1,38 @@
+// Shared breakpoints. Media queries can't read CSS custom properties, so the
+// scale lives here. In a module: @use "breakpoints" as bp;
+//   @include bp.up(md) { … }        768px and wider
+//   @include bp.down(md) { … }      narrower than 768px
+//   @include bp.between(md, lg) { … }
+@use "sass:map";
+
+$breakpoints: (
+  sm: 640px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+);
+
+@function width-of($name) {
+  @if not map.has-key($breakpoints, $name) {
+    @error "Unknown breakpoint `#{$name}`. Use one of: #{map.keys($breakpoints)}.";
+  }
+  @return map.get($breakpoints, $name);
+}
+
+@mixin up($name) {
+  @media (min-width: width-of($name)) {
+    @content;
+  }
+}
+
+@mixin down($name) {
+  @media (max-width: (width-of($name) - 0.02px)) {
+    @content;
+  }
+}
+
+@mixin between($from, $to) {
+  @media (min-width: width-of($from)) and (max-width: (width-of($to) - 0.02px)) {
+    @content;
+  }
+}

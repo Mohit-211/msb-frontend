@@ -1,8 +1,10 @@
+@use "breakpoints" as bp;
+
 .Banner {
-    border-radius: 15px;
+    border-radius: var(--radius-xl);
     // background: #F79192;
-    background-color: #C8232C;
-    color: white;
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
     width: 95%;
     margin: 25px auto;
     padding: 25px;
@@ -14,24 +16,24 @@
         .left {
             width: 50%;
             h3 {
-                color: #FFF;
+                color: var(--color-on-primary);
                 // font-family: SF Pro Display;
                 font-size: 40px;
                 font-style: normal;
-                font-family: 'Montserrat', sans-serif !important;
-                font-weight: 500;
+                font-family: var(--font-sans);
+                font-weight: var(--font-weight-medium);
                 line-height: 86px;
                 /* 122.857% */
                 letter-spacing: 0.7px;
             }
             p {
-                color: #E8E8E8;
+                color: rgba(var(--color-white-rgb), 0.9);
                 // font-family: SF Pro Display;
                 font-size: 17px;
                 font-style: normal;
-                font-family: 'Montserrat', sans-serif !important;
+                font-family: var(--font-sans);
 
-                font-weight: 400;
+                font-weight: var(--font-weight-normal);
                 line-height: 28px;
                 /* 155.556% */
             }
@@ -43,14 +45,14 @@
         .picture {
             // width: inherit;
             // height: auto;
-            border-radius: 15px;
-    border: 7px solid #FFF;
+            border-radius: var(--radius-xl);
+    border: 7px solid var(--color-white);
             width: 300px;
             height: 300px;
         }
     }
 }
-@media (max-width:767px){
+@include bp.down(md){
     .Banner{
 padding: 0 !important;
         .section1{

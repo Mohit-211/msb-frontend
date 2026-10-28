@@ -1,47 +1,44 @@
-/* Base Card */
-.card {
-  background: var(--card);
-  color: var(--card-foreground);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+// Base styles sit inside :where() (zero specificity), so a className passed to
+// <Card> or <CardContent> always wins over them, whatever order the CSS loads in.
+
+:where(.card) {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
 }
 
-/* Card Header */
-.cardHeader {
-  padding: 24px;
+:where(.cardHeader) {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-2);
+  padding: var(--space-6);
 }
 
-/* Title */
-.cardTitle {
-  font-size: 22px;
-  font-weight: 600;
-  line-height: 1.1;
+:where(.cardTitle) {
   margin: 0;
+  font-size: var(--text-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--leading-tight);
 }
 
-/* Description */
-.cardDescription {
-  font-size: 14px;
-  color: var(--muted-foreground);
+:where(.cardDescription) {
   margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
 }
 
-/* Card Body */
-.cardContent {
-  padding: 24px;
+:where(.cardContent) {
+  padding: var(--space-6);
   padding-top: 0;
 }
 
-/* Footer */
-.cardFooter {
-  padding: 24px;
-  padding-top: 0;
+:where(.cardFooter) {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  padding-top: 0;
 }

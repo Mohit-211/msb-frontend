@@ -1,6 +1,8 @@
+@use "breakpoints" as bp;
+
 .profile {
     padding: 20px;
-    margin-top: 100px;
+    margin-top: calc(var(--header-height) + var(--space-4));
 
     .profiletop {
         display: flex;
@@ -15,22 +17,22 @@
       }
   
     h6 {
-        color: rgba(51, 51, 51, 0.60);
-        font-family: SF Pro Display;
+        color: var(--color-text-muted);
+        font-family: var(--font-sans);
         font-size: 16px;
         font-style: normal;
-        font-weight: 400;
+        font-weight: var(--font-weight-normal);
         line-height: normal;
     }
     .profile_inner {
-        border-radius: 15px;
-        background: rgba(238, 35, 37, 0.10);
+        border-radius: var(--radius-xl);
+        background: rgba(var(--color-primary-rgb), 0.10);
         padding: 20px;
     }
 
     .Picture {
         padding: 20px;
-        border-radius: 50px;
+        border-radius: var(--radius-full);
     }
 
     .section1 {
@@ -54,46 +56,43 @@
 
         .line {
             width: 1px;
-            background-color: #696969;
-            border: 2px solid #696969;
+            background-color: var(--color-border-strong);
+            border: 2px solid var(--color-border-strong);
         }
 
+        // Edit / Change password tabs (react-bootstrap Buttons, themed through Bootstrap's variables)
         .btn_theme_div {
-            border-radius: 8px;
-            // background: #174F78;
-            // background: transparent !important;
+            --bs-btn-bg: transparent;
+            --bs-btn-color: var(--color-text);
+            --bs-btn-hover-bg: var(--color-bg-muted);
+            --bs-btn-hover-color: var(--color-text);
+            --bs-btn-active-bg: var(--color-bg-muted);
+            --bs-btn-active-color: var(--color-text);
+            border-radius: var(--radius-md);
             box-shadow: none !important;
-            color: black;
             display: block;
             width: 100%;
             margin: 20px 0px;
             border: none !important;
-            font-weight: bolder;
+            font-weight: var(--font-weight-bold);
+
+            &.tabActive {
+                --bs-btn-bg: var(--color-secondary);
+                --bs-btn-color: var(--color-on-secondary);
+                --bs-btn-hover-bg: var(--color-secondary-hover);
+                --bs-btn-hover-color: var(--color-on-secondary);
+                --bs-btn-active-bg: var(--color-secondary-active);
+                --bs-btn-active-color: var(--color-on-secondary);
+            }
         }
         .buttons{
             display: flex; 
             margin: 100px 0px;
         }
     }
-    .input_container {
-        position: relative;
-        span {
-          position: absolute;
-          right: 10px;
-          top: 5px;
-          font-size: 12px;
-          font-weight: 600;
-          cursor: pointer;
-        }
-      }
-      .error_message{
-        padding-top: 5px;
-        color: red !important;
-        
-      }
 }
 
-@media (max-width:767px) {
+@include bp.down(md) {
     .section2 {
         display: block !important;
 
@@ -112,4 +111,7 @@
             margin: 20px 0px !important;
         }
     }
+}
+.avatarPreview {
+    border-radius: var(--radius-full);
 }

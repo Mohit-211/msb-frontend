@@ -1,6 +1,4 @@
 import Head from 'next/head'
-import Otp from './otp'
-import Home from './home'
 import Landing from '@/Component/landing/landing'
 export default function Index() {
   return (

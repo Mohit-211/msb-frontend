@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styles from "./signin.module.scss";
-import Link from "next/link";
 import { UserLoginAPI } from "@/Constants/Api/Api";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
@@ -173,7 +172,7 @@ const Signin = () => {
                     type="button"
                     onClick={() =>
                       router.push(
-                        "https://transactions.sendowl.com/products/78271145/4A5919F0/view"
+                        "https://transactions.sendowl.com/products/78271145/4A5919F0/view",
                       )
                     }
                     className={styles.subscribeLink}

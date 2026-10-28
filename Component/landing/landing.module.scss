@@ -1,29 +1,4 @@
-// Brand Colors
-$color-primary-red: #ed1c24;
-$color-primary-blue: #174f78;
-$color-primary-blue-dark: #0d3247;
-$color-primary-blue-light: #2067a0;
-
-// Supporting Colors
-$color-background: #ffffff;
-$color-foreground: #1a1a1a;
-$color-muted: #5a5a5a;
-$color-muted-light: #737373;
-$color-accent: #f9fafb;
-$color-white: #ffffff;
-$color-dark: #0f172a;
-
-// Shadows
-$shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-  0 2px 4px -1px rgba(0, 0, 0, 0.06);
-$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-  0 4px 6px -2px rgba(0, 0, 0, 0.05);
-$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
-  0 10px 10px -5px rgba(0, 0, 0, 0.04);
-$shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-$shadow-red: 0 10px 30px -5px rgba(237, 28, 36, 0.3);
-$shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
+@use "breakpoints" as bp;
 
 // SCSS Mixins
 @mixin flex-center {
@@ -35,29 +10,29 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 @mixin section-base {
   padding-top: 4rem;
   padding-bottom: 4rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     padding-top: 6rem;
     padding-bottom: 6rem;
   }
-  @media (min-width: 1024px) {
+  @include bp.up(lg) {
     padding-top: 8rem;
     padding-bottom: 8rem;
   }
 }
 
 @mixin hover-lift {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all var(--duration-slow) var(--ease-emphasized);
   &:hover {
     transform: translateY(-8px);
-    box-shadow: $shadow-2xl;
+    box-shadow: var(--shadow-2xl);
   }
 }
 
 @mixin gradient-text {
   background: linear-gradient(
     135deg,
-    $color-primary-red 0%,
-    $color-primary-blue 100%
+    var(--color-primary) 0%,
+    var(--color-secondary) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -67,7 +42,7 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 // Base Container
 .container {
   min-height: 100vh;
-  background-color: $color-background;
+  background-color: var(--color-bg);
 }
 
 .max-width-wrapper {
@@ -82,21 +57,21 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   text-align: center;
   margin-bottom: 3.5rem;
 
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     margin-bottom: 4.5rem;
   }
 }
 
 .section-padding {
   @include section-base;
-  background-color: $color-background;
+  background-color: var(--color-bg);
 }
 
 .section-accent {
   background: linear-gradient(
     180deg,
-    $color-accent 0%,
-    rgba($color-primary-blue, 0.03) 100%
+    var(--color-bg-subtle) 0%,
+    rgba(var(--color-secondary-rgb), 0.03) 100%
   );
 }
 
@@ -119,15 +94,15 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba($color-primary-blue-dark, 0.95) 0%,
-    rgba($color-primary-blue, 0.85) 50%,
-    rgba($color-primary-red, 0.75) 100%
+    rgba(var(--color-secondary-700-rgb), 0.95) 0%,
+    rgba(var(--color-secondary-rgb), 0.85) 50%,
+    rgba(var(--color-primary-rgb), 0.75) 100%
   );
 }
 
 .hero-content {
   position: relative;
-  z-index: 10;
+  z-index: var(--z-above);
   max-width: 1280px;
   margin: 0 auto;
   padding: 8rem 1.5rem;
@@ -137,30 +112,30 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 
 .hero-title {
   font-size: 3rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 5.5rem;
   }
-  font-weight: 900;
-  color: $color-white;
+  font-weight: var(--font-weight-black);
+  color: var(--color-white);
   margin-bottom: 2rem;
   line-height: 1.1;
   letter-spacing: -0.02em;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 4px 20px rgba(var(--color-black-rgb), 0.3);
 }
 
 .hero-subtitle {
   font-size: 1.25rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 1.75rem;
   }
-  color: rgba($color-white, 0.95);
+  color: rgba(var(--color-white-rgb), 0.95);
 
   max-width: 56rem;
   margin-left: auto;
   margin-right: auto;
   line-height: 1.7;
-  font-weight: 300;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  font-weight: var(--font-weight-light);
+  text-shadow: 0 2px 10px rgba(var(--color-black-rgb), 0.2);
 }
 
 .hero-actions {
@@ -170,7 +145,7 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   justify-content: center;
   align-items: center;
   margin-top: 3rem;
-  @media (min-width: 640px) {
+  @include bp.up(sm) {
     flex-direction: row;
     gap: 1.5rem;
   }
@@ -195,10 +170,10 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  border-radius: 0.5rem;
+  font-weight: var(--font-weight-semibold);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--duration-moderate) var(--ease-standard);
   border: none;
   text-decoration: none;
   font-family: inherit;
@@ -206,7 +181,7 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba($color-primary-red, 0.3);
+    box-shadow: var(--ring-primary);
   }
 
   &:disabled {
@@ -218,14 +193,14 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 // Primary Red Button
 .btn-primary {
   @extend .custom-button;
-  background: $color-primary-red;
-  color: $color-white;
-  box-shadow: 0 4px 14px rgba($color-primary-red, 0.4);
+  background: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: var(--shadow-primary-sm);
 
   &:hover:not(:disabled) {
-    background: darken($color-primary-red, 8%);
+    background: var(--color-primary-hover);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba($color-primary-red, 0.5);
+    box-shadow: var(--shadow-primary-md);
   }
 
   &:active:not(:disabled) {
@@ -236,14 +211,14 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 // Primary Blue Button
 .btn-primary-blue {
   @extend .custom-button;
-  background: $color-primary-blue;
-  color: $color-white;
-  box-shadow: 0 4px 14px rgba($color-primary-blue, 0.4);
+  background: var(--color-secondary);
+  color: var(--color-white);
+  box-shadow: var(--shadow-secondary-sm);
 
   &:hover:not(:disabled) {
-    background: lighten($color-primary-blue, 8%);
+    background: var(--color-secondary-hover);
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba($color-primary-blue, 0.5);
+    box-shadow: var(--shadow-secondary-md);
   }
 
   &:active:not(:disabled) {
@@ -251,48 +226,18 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   }
 }
 
-// Outline Red Button
-.btn-outline-red {
-  @extend .custom-button;
-  background: transparent;
-  color: $color-primary-red;
-  border: 2px solid $color-primary-red;
-
-  &:hover:not(:disabled) {
-    background: $color-primary-red;
-    color: $color-white;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba($color-primary-red, 0.3);
-  }
-}
-
-// Outline Blue Button
-.btn-outline-blue {
-  @extend .custom-button;
-  background: transparent;
-  color: $color-primary-blue;
-  border: 2px solid $color-primary-blue;
-
-  &:hover:not(:disabled) {
-    background: $color-primary-blue;
-    color: $color-white;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba($color-primary-blue, 0.3);
-  }
-}
-
 // White Outline Button (for dark backgrounds)
 .btn-outline-white {
   @extend .custom-button;
-  background: rgba($color-white, 0.1);
+  background: rgba(var(--color-white-rgb), 0.1);
   backdrop-filter: blur(10px);
-  color: $color-white;
-  border: 2px solid rgba($color-white, 0.6);
+  color: var(--color-white);
+  border: 2px solid rgba(var(--color-white-rgb), 0.6);
 
   &:hover:not(:disabled) {
-    background: $color-white;
-    color: $color-primary-blue;
-    border-color: $color-white;
+    background: var(--color-surface);
+    color: var(--color-secondary);
+    border-color: var(--color-white);
     transform: translateY(-2px);
   }
 }
@@ -300,32 +245,21 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 // White Solid Button
 .btn-white {
   @extend .custom-button;
-  background: $color-white;
-  color: $color-primary-red;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-lg);
 
   &:hover:not(:disabled) {
-    background: $color-primary-blue;
-    color: $color-white;
+    background: var(--color-secondary);
+    color: var(--color-white);
     transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-xl);
   }
-}
-
-// Button Sizes
-.btn-sm {
-  padding: 0.625rem 1.25rem;
-  font-size: 0.875rem;
 }
 
 .btn-md {
   padding: 0.75rem 1.75rem;
   font-size: 1rem;
-}
-
-.btn-lg {
-  padding: 0.875rem 2rem;
-  font-size: 1.0625rem;
 }
 
 .btn-xl {
@@ -338,13 +272,13 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 // ============================
 .section-title {
   font-size: 2.25rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 3rem;
   }
-  @media (min-width: 1024px) {
+  @include bp.up(lg) {
     font-size: 3.5rem;
   }
-  font-weight: 800;
+  font-weight: var(--font-weight-extrabold);
   // color: $color-foreground;
   @include gradient-text;
   margin-bottom: 1.5rem;
@@ -354,13 +288,13 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 
 .section-title-large {
   font-size: 2.25rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 3rem;
   }
-  @media (min-width: 1024px) {
+  @include bp.up(lg) {
     font-size: 3.75rem;
   }
-  font-weight: 800;
+  font-weight: var(--font-weight-extrabold);
   @include gradient-text;
   margin-bottom: 1.25rem;
   line-height: 1.2;
@@ -369,14 +303,14 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 
 .section-title-light {
   font-size: 2.25rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 3rem;
   }
-  @media (min-width: 1024px) {
+  @include bp.up(lg) {
     font-size: 3.5rem;
   }
-  font-weight: 800;
-  color: $color-white;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-white);
   margin-bottom: 1.5rem;
   line-height: 1.2;
   letter-spacing: -0.02em;
@@ -384,33 +318,33 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 
 .section-subtitle {
   font-size: 1.125rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 1.25rem;
   }
-  color: $color-muted-light;
+  color: var(--color-text-muted);
   max-width: 48rem;
   margin-left: auto;
   margin-right: auto;
   line-height: 1.7;
-  font-weight: 400;
+  font-weight: var(--font-weight-normal);
 }
 
 .section-subtitle-light {
   @extend .section-subtitle;
-  color: rgba($color-white, 0.9);
+  color: rgba(var(--color-white-rgb), 0.9);
 }
 
 .section-subtitle-small {
   font-size: 1.5rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 1.75rem;
   }
-  font-weight: 700;
-  color: $color-foreground;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
   margin-bottom: 2.5rem;
   margin-top: 3rem;
 
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     margin-top: 4rem;
     margin-bottom: 3rem;
   }
@@ -418,44 +352,44 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 
 .blockquote {
   font-size: 1.25rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 1.375rem;
   }
-  color: $color-foreground;
+  color: var(--color-text);
   font-style: italic;
-  border-left: 4px solid $color-primary-red;
+  border-left: 4px solid var(--color-primary);
   padding-left: 1.5rem;
   margin-bottom: 1.75rem;
   margin-top: 0.5rem;
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   line-height: 1.6;
 }
 
 .text-muted {
   font-size: 1rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 1.0625rem;
   }
-  color: $color-muted;
+  color: var(--color-text-secondary);
   margin-bottom: 1.25rem;
   line-height: 1.75;
-  font-weight: 400;
+  font-weight: var(--font-weight-normal);
 }
 
 .text-muted-relaxed {
   font-size: 1rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 1.0625rem;
   }
-  color: $color-muted;
+  color: var(--color-text-secondary);
   margin-bottom: 1.25rem;
   line-height: 1.75;
-  font-weight: 400;
+  font-weight: var(--font-weight-normal);
 }
 
 .text-muted-small {
   font-size: 0.975rem;
-  color: $color-muted;
+  color: var(--color-text-secondary);
   line-height: 1.6;
 }
 
@@ -473,25 +407,25 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   gap: 3rem;
   align-items: center;
 
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     grid-template-columns: repeat(2, 1fr);
     gap: 4rem;
   }
 
-  @media (min-width: 1024px) {
+  @include bp.up(lg) {
     gap: 6rem;
   }
 
   &__image-wrapper {
     order: 2;
-    @media (min-width: 768px) {
+    @include bp.up(md) {
       order: 1;
     }
   }
 
   &__content {
     order: 1;
-    @media (min-width: 768px) {
+    @include bp.up(md) {
       order: 2;
     }
   }
@@ -499,10 +433,10 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 
 .storytelling-image {
   width: 100%;
-  border-radius: 1.5rem;
-  box-shadow: $shadow-xl;
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
   animation: slideUp 0.8s ease-out;
-  transition: transform 0.4s ease;
+  transition: transform var(--duration-slow) var(--ease-standard);
 
   &:hover {
     transform: scale(1.02);
@@ -518,13 +452,13 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   align-items: center;
   margin-bottom: 4rem;
 
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     grid-template-columns: repeat(2, 1fr);
     gap: 3.5rem;
     margin-bottom: 5rem;
   }
 
-  @media (min-width: 1024px) {
+  @include bp.up(lg) {
     gap: 5rem;
     margin-bottom: 6rem;
   }
@@ -536,55 +470,55 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   align-items: center;
   margin-bottom: 4rem;
 
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     grid-template-columns: repeat(2, 1fr);
     gap: 3.5rem;
     margin-bottom: 5rem;
   }
 
-  @media (min-width: 1024px) {
+  @include bp.up(lg) {
     gap: 5rem;
     margin-bottom: 6rem;
   }
 
   .feature-image-wrapper {
     order: 2;
-    @media (min-width: 768px) {
+    @include bp.up(md) {
       order: 1;
     }
   }
 
   .feature-card {
     order: 1;
-    @media (min-width: 768px) {
+    @include bp.up(md) {
       order: 2;
     }
   }
 }
 
 .feature-card {
-  border: 2px solid rgba($color-primary-blue, 0.15);
-  border-radius: 1rem;
-  background: $color-white;
+  border: 2px solid rgba(var(--color-secondary-rgb), 0.15);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
   @include hover-lift;
 
   &:hover {
-    border-color: $color-primary-blue;
-    box-shadow: $shadow-blue;
+    border-color: var(--color-secondary);
+    box-shadow: var(--shadow-secondary-lg);
   }
 
   // Alternate cards with red accent
   &:nth-child(2) {
-    border-color: rgba($color-primary-red, 0.15);
+    border-color: rgba(var(--color-primary-rgb), 0.15);
 
     &:hover {
-      border-color: $color-primary-red;
-      box-shadow: $shadow-red;
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-primary-lg);
     }
 
     .feature-icon {
-      color: $color-primary-red;
-      filter: drop-shadow(0 2px 4px rgba(237, 28, 36, 0.2));
+      color: var(--color-primary);
+      filter: drop-shadow(0 2px 4px rgba(var(--color-primary-rgb), 0.2));
     }
   }
 }
@@ -592,11 +526,11 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 .feature-card-content {
   padding: 2rem;
 
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     padding: 2.5rem;
   }
 
-  @media (min-width: 1024px) {
+  @include bp.up(lg) {
     padding: 3rem;
   }
 }
@@ -604,18 +538,18 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 .feature-icon {
   width: 4rem;
   height: 4rem;
-  color: $color-primary-blue;
+  color: var(--color-secondary);
   margin-bottom: 1.5rem;
-  filter: drop-shadow(0 2px 4px rgba(23, 79, 120, 0.2));
+  filter: drop-shadow(0 2px 4px rgba(var(--color-secondary-rgb), 0.2));
 }
 
 .feature-title {
   font-size: 1.5rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 1.75rem;
   }
-  font-weight: 700;
-  color: $color-foreground;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
   margin-bottom: 1.5rem;
   line-height: 1.3;
 }
@@ -625,10 +559,10 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   flex-direction: column;
   gap: 0.875rem;
   font-size: 0.9375rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 1rem;
   }
-  color: $color-foreground;
+  color: var(--color-text);
   line-height: 1.6;
 }
 
@@ -643,7 +577,7 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 .feature-check-icon {
   width: 1.5rem;
   height: 1.5rem;
-  color: $color-primary-blue;
+  color: var(--color-secondary);
   margin-top: 0.25rem;
   flex-shrink: 0;
 }
@@ -651,15 +585,15 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 .feature-star-icon {
   width: 1.5rem;
   height: 1.5rem;
-  color: $color-primary-red;
+  color: var(--color-primary);
   margin-top: 0.25rem;
   flex-shrink: 0;
 }
 
 .feature-image-wrapper {
-  border-radius: 1.5rem;
+  border-radius: var(--radius-2xl);
   overflow: hidden;
-  box-shadow: $shadow-xl;
+  box-shadow: var(--shadow-xl);
   position: relative;
 
   &::after {
@@ -668,11 +602,11 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
     inset: 0;
     background: linear-gradient(
       135deg,
-      rgba($color-primary-red, 0.1) 0%,
-      rgba($color-primary-blue, 0.1) 100%
+      rgba(var(--color-primary-rgb), 0.1) 0%,
+      rgba(var(--color-secondary-rgb), 0.1) 100%
     );
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity var(--duration-moderate) var(--ease-standard);
   }
 
   &:hover::after {
@@ -684,7 +618,7 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform var(--duration-slow) var(--ease-standard);
 
   .feature-image-wrapper:hover & {
     transform: scale(1.05);
@@ -697,35 +631,35 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 .use-case-grid {
   display: grid;
   gap: 1.5rem;
-  @media (min-width: 640px) {
+  @include bp.up(sm) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media (min-width: 1024px) {
+  @include bp.up(lg) {
     grid-template-columns: repeat(5, 1fr);
   }
 }
 
 .use-case-card {
   text-align: center;
-  border: 2px solid rgba($color-primary-blue, 0.1);
+  border: 2px solid rgba(var(--color-secondary-rgb), 0.1);
   background: linear-gradient(
     135deg,
-    rgba($color-white, 1) 0%,
-    rgba($color-accent, 0.5) 100%
+    rgba(var(--color-white-rgb), 1) 0%,
+    rgba(var(--color-gray-50-rgb), 0.5) 100%
   );
-  border-radius: 1rem;
+  border-radius: var(--radius-xl);
   @include hover-lift;
 
   &:hover {
-    border-color: $color-primary-red;
-    background: $color-white;
+    border-color: var(--color-primary);
+    background: var(--color-surface);
   }
 }
 
 .use-case-card-content {
   padding: 1.75rem;
 
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     padding: 2rem;
   }
 }
@@ -735,19 +669,19 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   height: 4rem;
   background: linear-gradient(
     135deg,
-    rgba($color-primary-blue, 0.15) 0%,
-    rgba($color-primary-red, 0.15) 100%
+    rgba(var(--color-secondary-rgb), 0.15) 0%,
+    rgba(var(--color-primary-rgb), 0.15) 100%
   );
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   @include flex-center;
   margin: 0 auto 1rem;
-  transition: all 0.3s ease;
+  transition: all var(--duration-moderate) var(--ease-standard);
 
   .use-case-card:hover & {
     background: linear-gradient(
       135deg,
-      $color-primary-blue 0%,
-      $color-primary-red 100%
+      var(--color-secondary) 0%,
+      var(--color-primary) 100%
     );
     transform: rotate(10deg) scale(1.1);
   }
@@ -755,16 +689,16 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   .use-case-card:nth-child(even) & {
     background: linear-gradient(
       135deg,
-      rgba($color-primary-red, 0.15) 0%,
-      rgba($color-primary-blue, 0.15) 100%
+      rgba(var(--color-primary-rgb), 0.15) 0%,
+      rgba(var(--color-secondary-rgb), 0.15) 100%
     );
   }
 
   .use-case-card:nth-child(even):hover & {
     background: linear-gradient(
       135deg,
-      $color-primary-red 0%,
-      $color-primary-blue 100%
+      var(--color-primary) 0%,
+      var(--color-secondary) 100%
     );
   }
 }
@@ -772,25 +706,25 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 .use-case-icon {
   width: 2rem;
   height: 2rem;
-  color: $color-primary-blue;
-  transition: color 0.3s ease;
+  color: var(--color-secondary);
+  transition: color var(--duration-moderate) var(--ease-standard);
 
   .use-case-card:nth-child(even) & {
-    color: $color-primary-red;
+    color: var(--color-primary);
   }
 
   .use-case-card:hover & {
-    color: $color-white;
+    color: var(--color-white);
   }
 }
 
 .use-case-title {
   font-size: 1.0625rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 1.125rem;
   }
-  font-weight: 700;
-  color: $color-foreground;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
   margin-bottom: 0.5rem;
   line-height: 1.4;
 }
@@ -801,31 +735,31 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 .for-who-grid {
   display: grid;
   gap: 2rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media (min-width: 1024px) {
+  @include bp.up(lg) {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
 .for-who-card {
   text-align: center;
-  border: 2px solid rgba($color-primary-blue, 0.15);
-  border-radius: 1rem;
-  background: $color-white;
+  border: 2px solid rgba(var(--color-secondary-rgb), 0.15);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
   @include hover-lift;
 
   &:hover {
-    border-color: $color-primary-blue;
-    box-shadow: $shadow-blue;
+    border-color: var(--color-secondary);
+    box-shadow: var(--shadow-secondary-lg);
   }
 }
 
 .for-who-card-content {
   padding: 2rem;
 
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     padding: 2.5rem;
   }
 }
@@ -835,19 +769,19 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   height: 5rem;
   background: linear-gradient(
     135deg,
-    rgba($color-primary-blue, 0.1) 0%,
-    rgba($color-primary-red, 0.1) 100%
+    rgba(var(--color-secondary-rgb), 0.1) 0%,
+    rgba(var(--color-primary-rgb), 0.1) 100%
   );
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   @include flex-center;
   margin: 0 auto 1.5rem;
-  transition: all 0.3s ease;
+  transition: all var(--duration-moderate) var(--ease-standard);
 
   .for-who-card:hover & {
     background: linear-gradient(
       135deg,
-      $color-primary-blue 0%,
-      $color-primary-red 100%
+      var(--color-secondary) 0%,
+      var(--color-primary) 100%
     );
     transform: scale(1.1);
   }
@@ -856,21 +790,21 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 .for-who-icon {
   width: 2.5rem;
   height: 2.5rem;
-  color: $color-primary-blue;
-  transition: color 0.3s ease;
+  color: var(--color-secondary);
+  transition: color var(--duration-moderate) var(--ease-standard);
 
   .for-who-card:hover & {
-    color: $color-white;
+    color: var(--color-white);
   }
 }
 
 .for-who-title {
   font-size: 1.25rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 1.375rem;
   }
-  font-weight: 700;
-  color: $color-foreground;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
   margin-bottom: 0.75rem;
   line-height: 1.3;
 }
@@ -881,10 +815,10 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 .why-stories-work-section {
   background: linear-gradient(
     135deg,
-    $color-primary-blue-dark 0%,
-    $color-primary-blue 100%
+    var(--color-secondary-700) 0%,
+    var(--color-secondary) 100%
   );
-  color: $color-white;
+  color: var(--color-white);
   position: relative;
   overflow: hidden;
 
@@ -898,7 +832,7 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
     background: linear-gradient(
       135deg,
       transparent 0%,
-      rgba($color-primary-red, 0.1) 100%
+      rgba(var(--color-primary-rgb), 0.1) 100%
     );
   }
 }
@@ -907,11 +841,11 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   display: grid;
   gap: 2rem;
   position: relative;
-  z-index: 1;
-  @media (min-width: 768px) {
+  z-index: var(--z-raised);
+  @include bp.up(md) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media (min-width: 1024px) {
+  @include bp.up(lg) {
     grid-template-columns: repeat(4, 1fr);
   }
 }
@@ -919,20 +853,20 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 .stories-work-item {
   text-align: center;
   padding: 1.75rem;
-  background: rgba($color-white, 0.1);
-  border-radius: 1rem;
+  background: rgba(var(--color-white-rgb), 0.1);
+  border-radius: var(--radius-xl);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba($color-white, 0.2);
-  transition: all 0.3s ease;
+  border: 1px solid rgba(var(--color-white-rgb), 0.2);
+  transition: all var(--duration-moderate) var(--ease-standard);
 
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     padding: 2rem;
   }
 
   &:hover {
-    background: rgba($color-white, 0.15);
+    background: rgba(var(--color-white-rgb), 0.15);
     transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-2xl);
   }
 }
 
@@ -941,35 +875,35 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   height: 4rem;
   background: linear-gradient(
     135deg,
-    $color-primary-red 0%,
-    darken($color-primary-red, 10%) 100%
+    var(--color-primary) 0%,
+    var(--color-primary-hover) 100%
   );
-  border-radius: 50%;
+  border-radius: var(--radius-full);
   @include flex-center;
   margin: 0 auto 1.5rem;
-  box-shadow: 0 4px 15px rgba(237, 28, 36, 0.4);
+  box-shadow: var(--shadow-primary-sm);
 }
 
 .stories-work-icon {
   width: 2rem;
   height: 2rem;
-  color: $color-white;
+  color: var(--color-white);
 }
 
 .stories-work-title {
   font-size: 1.25rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 1.375rem;
   }
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   margin-bottom: 0.75rem;
   line-height: 1.3;
 }
 
 .stories-work-desc {
-  color: rgba($color-white, 0.9);
+  color: rgba(var(--color-white-rgb), 0.9);
   font-size: 0.9375rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 1rem;
   }
   line-height: 1.6;
@@ -981,37 +915,37 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 .video-icon {
   width: 4rem;
   height: 4rem;
-  color: $color-primary-blue;
+  color: var(--color-secondary);
   margin: 0 auto 2rem;
 }
 
 .video-grid {
   display: grid;
   gap: 2.5rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     grid-template-columns: repeat(2, 1fr);
   }
-  @media (min-width: 1024px) {
+  @include bp.up(lg) {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 .video-card {
   overflow: hidden;
-  border: 2px solid rgba($color-primary-blue, 0.15);
-  border-radius: 1rem;
-  background: $color-white;
+  border: 2px solid rgba(var(--color-secondary-rgb), 0.15);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
   @include hover-lift;
 
   &:hover {
-    border-color: $color-primary-blue;
+    border-color: var(--color-secondary);
   }
 
   &:nth-child(even) {
-    border-color: rgba($color-primary-red, 0.15);
+    border-color: rgba(var(--color-primary-rgb), 0.15);
 
     &:hover {
-      border-color: $color-primary-red;
+      border-color: var(--color-primary);
     }
   }
 }
@@ -1024,8 +958,8 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   aspect-ratio: 16 / 9;
   background: linear-gradient(
     135deg,
-    rgba($color-primary-blue, 0.1) 0%,
-    rgba($color-primary-red, 0.1) 100%
+    rgba(var(--color-secondary-rgb), 0.1) 0%,
+    rgba(var(--color-primary-rgb), 0.1) 100%
   );
   position: relative;
 }
@@ -1042,11 +976,11 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 
 .video-title {
   font-size: 1.125rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 1.25rem;
   }
-  font-weight: 700;
-  color: $color-foreground;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
   margin-bottom: 0.5rem;
   line-height: 1.3;
 }
@@ -1059,12 +993,12 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   gap: 3rem;
   align-items: center;
 
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     grid-template-columns: repeat(2, 1fr);
     gap: 4rem;
   }
 
-  @media (min-width: 1024px) {
+  @include bp.up(lg) {
     gap: 6rem;
   }
 }
@@ -1082,9 +1016,9 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   overflow: hidden;
   background: linear-gradient(
     135deg,
-    $color-primary-red 0%,
-    darken($color-primary-red, 15%) 50%,
-    $color-primary-blue 100%
+    var(--color-primary) 0%,
+    var(--color-primary-active) 50%,
+    var(--color-secondary) 100%
   );
 }
 
@@ -1100,8 +1034,8 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   left: -5rem;
   width: 20rem;
   height: 20rem;
-  background: $color-white;
-  border-radius: 50%;
+  background: var(--color-surface);
+  border-radius: var(--radius-full);
   filter: blur(60px);
   animation: float 6s ease-in-out infinite;
 }
@@ -1112,8 +1046,8 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   right: -8rem;
   width: 28rem;
   height: 28rem;
-  background: $color-white;
-  border-radius: 50%;
+  background: var(--color-surface);
+  border-radius: var(--radius-full);
   filter: blur(70px);
   animation: float 8s ease-in-out infinite reverse;
 }
@@ -1124,33 +1058,33 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   margin: 0 auto;
   padding: 0 1.5rem;
   text-align: center;
-  z-index: 1;
+  z-index: var(--z-raised);
 }
 
 .final-cta-title {
   font-size: 2.5rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 4rem;
   }
-  font-weight: 900;
-  color: $color-white;
+  font-weight: var(--font-weight-black);
+  color: var(--color-white);
   margin-bottom: 1.5rem;
   line-height: 1.2;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 4px 20px rgba(var(--color-black-rgb), 0.3);
 }
 
 .final-cta-subtitle {
   font-size: 1.25rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 1.5rem;
   }
-  color: rgba($color-white, 0.95);
+  color: rgba(var(--color-white-rgb), 0.95);
   margin-bottom: 3rem;
   max-width: 60rem;
   margin-left: auto;
   margin-right: auto;
   line-height: 1.7;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 2px 10px rgba(var(--color-black-rgb), 0.2);
 }
 
 .final-cta-button {
@@ -1158,7 +1092,7 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   @extend .btn-xl;
   min-width: 300px;
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: var(--font-weight-bold);
   padding: 1.125rem 3rem;
   margin-top: 3rem;
 }
@@ -1169,12 +1103,12 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 .footer {
   background: linear-gradient(
     135deg,
-    $color-primary-blue-dark 0%,
-    $color-dark 100%
+    var(--color-secondary-700) 0%,
+    var(--color-gray-900) 100%
   );
   padding-top: 4rem;
   padding-bottom: 4rem;
-  border-top: 1px solid rgba($color-white, 0.1);
+  border-top: 1px solid rgba(var(--color-white-rgb), 0.1);
 }
 
 .footer-content {
@@ -1182,7 +1116,7 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   gap: 2rem;
   align-items: center;
   text-align: center;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     grid-template-columns: 1fr auto 1fr;
     text-align: left;
   }
@@ -1190,20 +1124,20 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
 
 .footer-brand {
   text-align: center;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     text-align: left;
   }
 }
 
 .footer-title {
   font-size: 1.875rem;
-  font-weight: 700;
-  color: $color-white;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-white);
   margin-bottom: 0.5rem;
 }
 
 .footer-subtitle {
-  color: rgba($color-white, 0.7);
+  color: rgba(var(--color-white-rgb), 0.7);
   font-size: 1rem;
 }
 
@@ -1211,17 +1145,17 @@ $shadow-blue: 0 10px 30px -5px rgba(23, 79, 120, 0.3);
   display: flex;
   justify-content: center;
   gap: 1.5rem;
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     justify-content: flex-end;
   }
 }
 
 .social-icon {
-  color: rgba($color-white, 0.6);
-  transition: all 0.3s ease;
+  color: rgba(var(--color-white-rgb), 0.6);
+  transition: all var(--duration-moderate) var(--ease-standard);
 
   &:hover {
-    color: $color-primary-red;
+    color: var(--color-primary);
     transform: translateY(-3px);
   }
 

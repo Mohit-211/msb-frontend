@@ -11,7 +11,6 @@ import { Image_URL } from "@/Constants/host";
 import dummyStory from "../../public/assets/dummystory.png";
 import Banner from "../Banner/Banner";
 import CardComponent from "../CardComponent/CardComponent";
-import usePagination from "../usePagination";
 import ChatWidget from "../ChatBox/ChatWidget";
 import styles from "./Blogs.module.scss";
 import { fetchStoryHistory } from "@/redux/storyHistorySlice";
@@ -31,17 +30,15 @@ function Blogs() {
   const [isLoading, setIsLoading] = useState(false);
   const PER_PAGE = 6;
   const count = Math.ceil(dataCount / PER_PAGE);
-  const _DATA = usePagination(data, PER_PAGE);
   const [showFilter, setShowFilter] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const storedValue = getLocalStorageItem("UserLoginToken");
   const savedStories = useSelector(
-    (state) => state?.rootReducer?.storyHistory?.history
+    (state) => state?.rootReducer?.storyHistory?.history,
   );
 
   const handleChange = (e, p) => {
     setPage(p);
-    _DATA.jump(p);
     // Smooth scroll to top of content
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -55,8 +52,8 @@ function Blogs() {
       index === "all"
         ? `/story/all`
         : index === "my-saved-story"
-        ? `/story/my-saved-story`
-        : `/story/${categories[index]?.slug}`;
+          ? `/story/my-saved-story`
+          : `/story/${categories[index]?.slug}`;
     router.push(path);
     setShowFilter(false);
   };

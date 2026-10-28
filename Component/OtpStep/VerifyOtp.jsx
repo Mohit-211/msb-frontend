@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-// import { useState } from "react";
+import React from "react";
 import { Form } from "react-bootstrap";
 import styles from "./OtpStep.module.scss";
 import OTPInput from "react-otp-input";
@@ -20,23 +18,9 @@ const VerifyOtp = ({ formData, setFormData }) => {
           </Form.Group>
           <Form.Group className="input_field">
             <Form.Label className="mt-3">OTP</Form.Label>
-            {/* <Form.Control
-              type="number"
-              placeholder="OTP"
-              value={formData.otp}
-              onChange={(e) => {
-                setFormData({ ...formData, otp: e.target.value });
-              }}
-            /> */}
           </Form.Group>
-          <OTPInput 
-          
-            // value={otp}
+          <OTPInput
             value={formData.otp}
-            // onChange={setOtp}
-            //  onChange={() => {
-            //     setFormData({ ...formData, otp});
-            //   }}
             onChange={(otpValue) => {
               setFormData({ ...formData, otp: otpValue });
             }}
@@ -52,9 +36,6 @@ const VerifyOtp = ({ formData, setFormData }) => {
                   fontSize: "18px",
                   margin:"auto",
                   textAlign: "center",
-                  color: "#FFDE05",
-                  background: "#10313B",
-                  border: "2px solid #FFDE05",
                 }}
               />
             )}

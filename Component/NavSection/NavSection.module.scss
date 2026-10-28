@@ -1,16 +1,10 @@
-// Brand Colors
-$color-primary-red: #ed1c24;
-$color-primary-blue: #174f78;
-$color-primary-blue-dark: #0d3247;
-$color-white: #ffffff;
-$color-dark: #1a1a1a;
-$color-text: #2c3e50;
+@use "breakpoints" as bp;
 
 @mixin gradient-text {
   background: linear-gradient(
     135deg,
-    $color-primary-red 0%,
-    $color-primary-blue 100%
+    var(--color-primary) 0%,
+    var(--color-secondary) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -23,39 +17,41 @@ $color-text: #2c3e50;
   padding: 0;
   position: fixed;
   top: 0;
-  z-index: 50;
-  background: rgba(255, 255, 255, 0.98);
+  z-index: var(--z-header);
+  background: rgba(var(--color-white-rgb), 0.98);
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(23, 79, 120, 0.1);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
+  // The hairline is a shadow, not a border, so the bar is exactly --header-height tall
+  box-shadow: 0 1px 0 rgba(var(--color-secondary-rgb), 0.1), var(--shadow-sm);
+  transition: all var(--duration-moderate) var(--ease-standard);
 }
 
 // Main content alignment
 .inner {
   max-width: 1280px;
+  min-height: var(--header-height);
   margin: 0 auto;
-  padding: 1rem 1.5rem;
+  padding: 0 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  @media (min-width: 768px) {
-    padding: 1.25rem 2rem;
+  @include bp.up(md) {
+    padding: 0 2rem;
   }
 }
 
 // Logo Style
 .logo {
   font-size: 1.5rem;
-  font-weight: 800;
-  color: $color-primary-blue;
+  font-weight: var(--font-weight-extrabold);
+  color: var(--color-secondary);
   text-decoration: none;
   letter-spacing: -0.02em;
-  transition: all 0.3s ease;
+  transition: all var(--duration-moderate) var(--ease-standard);
   position: relative;
+  cursor: pointer;
 
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     font-size: 1.75rem;
   }
 
@@ -68,11 +64,11 @@ $color-text: #2c3e50;
     height: 3px;
     background: linear-gradient(
       90deg,
-      $color-primary-red 0%,
-      $color-primary-blue 100%
+      var(--color-primary) 0%,
+      var(--color-secondary) 100%
     );
-    transition: width 0.3s ease;
-    border-radius: 2px;
+    transition: width var(--duration-moderate) var(--ease-standard);
+    border-radius: var(--radius-xs);
   }
 
   &:hover {
@@ -90,21 +86,21 @@ $color-text: #2c3e50;
   align-items: center;
   gap: 2.5rem;
 
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     display: flex;
   }
 
-  @media (min-width: 1024px) {
+  @include bp.up(lg) {
     gap: 3rem;
   }
 }
 
 .link {
   font-size: 1rem;
-  font-weight: 600;
-  color: $color-text;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: all var(--duration-moderate) var(--ease-standard);
   position: relative;
   padding: 0.5rem 0;
 
@@ -115,12 +111,12 @@ $color-text: #2c3e50;
     left: 0;
     width: 0;
     height: 2px;
-    background: $color-primary-red;
-    transition: width 0.3s ease;
+    background: var(--color-primary);
+    transition: width var(--duration-moderate) var(--ease-standard);
   }
 
   &:hover {
-    color: $color-primary-red;
+    color: var(--color-primary);
 
     &::before {
       width: 100%;
@@ -135,21 +131,21 @@ $color-text: #2c3e50;
 // Login Button - Desktop
 .loginBtn {
   text-decoration: none;
-  background: $color-primary-red;
-  color: $color-white;
+  background: var(--color-primary);
+  color: var(--color-white);
   border: none;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1rem;
   padding: 0.625rem 1.75rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(237, 28, 36, 0.3);
+  transition: all var(--duration-moderate) var(--ease-standard);
+  box-shadow: var(--shadow-primary-sm);
 
   &:hover {
-    background: darken($color-primary-red, 8%);
+    background: var(--color-primary-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(237, 28, 36, 0.4);
+    box-shadow: var(--shadow-primary-md);
   }
 
   &:active {
@@ -158,7 +154,7 @@ $color-text: #2c3e50;
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(237, 28, 36, 0.3);
+    box-shadow: var(--ring-primary);
   }
 }
 
@@ -170,18 +166,18 @@ $color-text: #2c3e50;
   background: none;
   border: none;
   cursor: pointer;
-  color: $color-primary-blue;
+  color: var(--color-secondary);
   padding: 0.5rem;
-  border-radius: 0.375rem;
-  transition: all 0.3s ease;
+  border-radius: var(--radius-sm);
+  transition: all var(--duration-moderate) var(--ease-standard);
 
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     display: none;
   }
 
   &:hover {
-    background: rgba(23, 79, 120, 0.1);
-    color: $color-primary-red;
+    background: rgba(var(--color-secondary-rgb), 0.1);
+    color: var(--color-primary);
   }
 
   &:active {
@@ -189,7 +185,7 @@ $color-text: #2c3e50;
   }
 
   svg {
-    transition: transform 0.3s ease;
+    transition: transform var(--duration-moderate) var(--ease-standard);
   }
 }
 
@@ -199,53 +195,53 @@ $color-text: #2c3e50;
   flex-direction: column;
   gap: 0;
   padding: 1rem 1.5rem 1.5rem;
-  background: rgba(255, 255, 255, 0.98);
-  border-top: 1px solid rgba(23, 79, 120, 0.1);
+  background: rgba(var(--color-white-rgb), 0.98);
+  border-top: 1px solid rgba(var(--color-secondary-rgb), 0.1);
   animation: slideDown 0.3s ease;
 
-  @media (min-width: 768px) {
+  @include bp.up(md) {
     display: none;
   }
 }
 
 .mobileLink {
   font-size: 1.0625rem;
-  font-weight: 600;
-  color: $color-text;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
   text-decoration: none;
   padding: 0.875rem 1rem;
-  border-radius: 0.5rem;
-  transition: all 0.3s ease;
+  border-radius: var(--radius-md);
+  transition: all var(--duration-moderate) var(--ease-standard);
 
   &:hover {
-    background: rgba(23, 79, 120, 0.08);
-    color: $color-primary-red;
+    background: rgba(var(--color-secondary-rgb), 0.08);
+    color: var(--color-primary);
     padding-left: 1.25rem;
   }
 
   &:active {
-    background: rgba(23, 79, 120, 0.12);
+    background: rgba(var(--color-secondary-rgb), 0.12);
   }
 }
 
 .mobileLoginBtn {
   text-decoration: none;
-  background: $color-primary-red;
-  color: $color-white;
+  background: var(--color-primary);
+  color: var(--color-white);
   padding: 0.875rem 1rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   border: none;
-  font-weight: 600;
+  font-weight: var(--font-weight-semibold);
   font-size: 1.0625rem;
   cursor: pointer;
   margin-top: 0.5rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(237, 28, 36, 0.3);
+  transition: all var(--duration-moderate) var(--ease-standard);
+  box-shadow: var(--shadow-primary-sm);
 
   &:hover {
-    background: darken($color-primary-red, 8%);
+    background: var(--color-primary-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(237, 28, 36, 0.4);
+    box-shadow: var(--shadow-primary-md);
   }
 
   &:active {
@@ -265,8 +261,52 @@ $color-text: #2c3e50;
   }
 }
 
-// Scrolled State (can be added with JS)
-.navbar.scrolled {
-  background: rgba(255, 255, 255, 1);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+// Signed-in profile menu
+.profile {
+  position: relative;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  transition: background-color var(--duration-base) var(--ease-standard);
+
+  &:hover {
+    background-color: var(--color-primary-hover);
+  }
+}
+
+.profileMenu {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  z-index: var(--z-dropdown);
+  min-width: 11.25rem;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color var(--duration-base) var(--ease-standard);
+
+  &:hover {
+    background-color: var(--color-bg-muted);
+  }
 }

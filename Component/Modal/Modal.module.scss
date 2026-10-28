@@ -1,0 +1,85 @@
+// Stripe checkout modal on /pay.
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-radius: var(--radius-2xl);
+  background-color: var(--color-gray-200);
+}
+
+.mainCard {
+  width: 100%;
+  border-radius: var(--radius-2xl);
+  background-color: var(--color-surface);
+}
+
+.cardTop {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100px;
+  padding: 25px 40px;
+
+  h3 {
+    font-size: 1.3rem;
+  }
+}
+
+.amount {
+  font-weight: var(--font-weight-bold);
+}
+
+.cardBottom {
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+  padding: 25px 40px;
+  border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
+  background-color: var(--color-bg-subtle);
+
+  input {
+    padding: 16px 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xs);
+    font-size: 0.75rem;
+    text-indent: 13px;
+  }
+}
+
+.cardField {
+  padding: 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xs);
+  background-color: var(--color-surface);
+}
+
+.btnGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 15px;
+
+  button {
+    width: 100%;
+    padding: 17px 20px;
+    border: none;
+    border-radius: var(--radius-xs);
+    background-color: var(--color-secondary);
+    color: var(--color-on-secondary);
+    font-size: 0.7rem;
+    box-shadow: var(--shadow-md);
+    cursor: pointer;
+    transition: background-color var(--duration-slow) var(--ease-standard);
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-secondary-hover);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+}
