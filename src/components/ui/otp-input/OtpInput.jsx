@@ -6,8 +6,8 @@ import { useFieldControl } from "../field/Field";
 import styles from "./OtpInput.module.scss";
 
 // One real input drawn as a box per digit, so paste, one-time-code autofill and screen
-// readers all treat the code as a single field.
-export function OtpInput({ length = 4, className, invalid, disabled, ...props }) {
+// readers all treat the code as a single field. The API's reset codes are 6 digits.
+export function OtpInput({ length = 6, className, invalid, disabled, ...props }) {
   const { isInvalid, ...fieldProps } = useFieldControl({ invalid, ...props });
   return (
     <OTPInput

@@ -1,22 +1,17 @@
-import { GetComment } from '@/lib/api';
-import { getLocalStorageItem } from '@/lib/storage';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-const storedValue = getLocalStorageItem("UserLoginToken");
-export const fetchComments = createAsyncThunk(
-  'comments/fetchComments',
-  async (id,thunkAPI) => {
-    try {
-      if(id && storedValue){
-        const response = await GetComment(id,storedValue);
-        return response.data; 
-      }
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { GetComment } from "@/lib/api";
+
+export const fetchComments = createAsyncThunk("comments/fetchComments", async (id, thunkAPI) => {
+  try {
+    const response = await GetComment(id);
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
   }
-);
+});
+
 const commentSlice = createSlice({
-  name: 'comments',
+  name: "comments",
   initialState: {
     comments: [],
     loading: false,
@@ -39,4 +34,5 @@ const commentSlice = createSlice({
       });
   },
 });
+
 export default commentSlice.reducer;

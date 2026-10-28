@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./StoryComments.module.scss";
-import { AddCommentApi } from "@/lib/api";
+import { AddCommentApi, errorMessage } from "@/lib/api";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
@@ -22,9 +22,8 @@ const StoryComments = (props) => {
           setComment("");
         }
       })
-      .catch((e) => {
-        console.log(e);
-        toast.error("Couldn't post your comment. Try again.");
+      .catch((error) => {
+        toast.error(errorMessage(error, "Couldn't post your comment. Try again."));
       });
   };
   const dispatch = useDispatch();
@@ -44,6 +43,8 @@ const StoryComments = (props) => {
         <Field label="Add a comment">
           <Textarea
             placeholder="Leave a comment here"
+            // The API stores at most 255 characters
+            maxLength={255}
             value={comment}
             onChange={(e) => setComment(e.target.value)}
           />

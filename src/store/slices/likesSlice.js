@@ -1,26 +1,18 @@
-import { LikeCountApi } from '@/lib/api';
-import { getLocalStorageItem } from '@/lib/storage';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-const storedValue = getLocalStorageItem("UserLoginToken");
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { LikeCountApi } from "@/lib/api";
 
-export const fetchLike = createAsyncThunk(
-  'like/fetchlike',
-  async (id, thunkAPI) => {
-    try {
-      if(id &&storedValue){
-
-        const response = await LikeCountApi(id,storedValue); 
-        // Replace GetComment with your actual API call
-        return response.data; // Assuming the response has a 'data' property containing comments
-      }
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
+// { total_likes, is_like } for one story
+export const fetchLike = createAsyncThunk("like/fetchlike", async (id, thunkAPI) => {
+  try {
+    const response = await LikeCountApi(id);
+    return response.data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
   }
-);
+});
 
 const likeSlice = createSlice({
-  name: 'like',
+  name: "like",
   initialState: {
     like: [],
     loading: false,

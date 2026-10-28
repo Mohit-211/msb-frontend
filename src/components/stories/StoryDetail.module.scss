@@ -125,3 +125,74 @@
   font-weight: var(--font-weight-bold);
   text-decoration: underline;
 }
+
+// A Premium story the reader's plan can't open: the teaser above, then this. Nested so the
+// story text styles above (.storyBody p) don't apply.
+.storyBody .locked {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+  margin: 0 0 var(--space-8);
+  padding: var(--space-4) var(--space-5);
+  background-color: var(--color-warning-subtle);
+  border: 1px solid var(--color-warning);
+  border-radius: var(--radius-lg);
+
+  h3 {
+    margin: 0 0 var(--space-1);
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+  }
+
+  p {
+    margin: 0;
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+    color: var(--color-text-secondary);
+  }
+}
+
+.lockedIcon {
+  flex: none;
+  color: var(--color-warning);
+}
+
+.lockedText {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+.subscribe {
+  padding: var(--space-2) var(--space-5);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-on-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-md);
+
+  &:hover {
+    color: var(--color-on-primary);
+    background-color: var(--color-primary-hover);
+  }
+}
+
+// While the story loads, or when it couldn't
+.loading {
+  display: block;
+  padding-block: var(--space-8);
+}
+
+.storyBody .loadError {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding-block: var(--space-8);
+
+  p {
+    margin: 0;
+  }
+}

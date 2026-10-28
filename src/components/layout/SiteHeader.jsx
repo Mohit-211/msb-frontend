@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useIsClient } from "@/hooks/useIsClient";
 import { usePathname, useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Menu, X, User, LogOut } from "lucide-react";
+import { useToken } from "@/hooks/useToken";
 import { UserLogOutAPI } from "@/lib/api";
-import { getLocalStorageItem, removeLocalStorageItem } from "@/lib/storage";
-import { fetchProfile } from "@/store/slices/profileSlice";
+import { clearToken } from "@/lib/session";
+import { fetchProfile, profileCleared, selectProfile } from "@/store/slices/profileSlice";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,36 +28,24 @@ const SiteHeader = () => {
   const pathname = usePathname();
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const [profile, setProfile] = useState(null);
-  const isClient = useIsClient();
+  const profile = useSelector(selectProfile);
 
-  const storedValue = getLocalStorageItem("UserLoginToken");
-  const signedIn = isClient && Boolean(storedValue);
+  // undefined until the browser has read localStorage, then the token or null
+  const token = useToken();
+  const signedIn = Boolean(token);
 
+  // The profile (and with it the plan) follows the session.
   useEffect(() => {
-    if (storedValue) {
-      dispatch(fetchProfile(storedValue))
-        .then((res) => {
-          setProfile(res?.payload);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }, [dispatch, storedValue]);
+    if (token) dispatch(fetchProfile());
+    else if (token === null) dispatch(profileCleared());
+  }, [dispatch, token]);
 
   const handleLogout = () => {
-    removeLocalStorageItem("UserLoginToken");
-    if (storedValue) {
-      UserLogOutAPI()
-        .then((res) => {
-          router.replace("/");
-        })
-        .catch((error) => {
-          router.replace("/");
-          console.log(error);
-        });
-    }
+    // The request carries the token so the API can revoke the session; this tab signs out
+    // straight away either way.
+    UserLogOutAPI(token).catch((error) => console.log(error));
+    clearToken();
+    router.replace("/");
   };
 
   const closeMobileMenu = () => setOpen(false);
@@ -129,7 +117,7 @@ const SiteHeader = () => {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            isClient && (
+            token === null && (
               <Link href="/signin" className={styles.loginBtn}>
                 Login
               </Link>
@@ -188,7 +176,7 @@ const SiteHeader = () => {
               </button>
             </>
           ) : (
-            isClient && (
+            token === null && (
               <Link href="/signin" className={styles.mobileLoginBtn} onClick={closeMobileMenu}>
                 Login
               </Link>

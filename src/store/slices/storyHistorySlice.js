@@ -1,23 +1,13 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { API_URL } from '@/lib/config';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { GetSavedStoriesApi } from "@/lib/api";
 
-// Create an async thunk for fetching data from the API
-export const fetchStoryHistory = createAsyncThunk(
-  'storyHistory/fetchStoryHistory',
-  async (token) => {
-    const response = await axios.get(`${API_URL}/story`, {
-      headers: {
-        'x-access-token': token,
-      },
-    });
-    return response.data; // Returning the response data
-  }
+// The signed-in user's saved AI stories. Stories saved during the trial stay readable.
+export const fetchStoryHistory = createAsyncThunk("storyHistory/fetchStoryHistory", async () =>
+  GetSavedStoriesApi(),
 );
 
-// Create the slice
 const storyHistorySlice = createSlice({
-  name: 'storyHistory',
+  name: "storyHistory",
   initialState: {
     history: [],
     loading: false,

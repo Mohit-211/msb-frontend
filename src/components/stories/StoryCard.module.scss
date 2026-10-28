@@ -49,6 +49,9 @@
 
 // Premium Badge
 .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;

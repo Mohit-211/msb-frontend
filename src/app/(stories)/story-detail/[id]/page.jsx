@@ -1,16 +1,20 @@
-import { notFound } from "next/navigation";
-import StoryDetail from "@/components/stories/StoryDetail";
-import { getStory } from "@/lib/api.server";
+import RequireAuth from "@/components/auth/RequireAuth";
+import SignInPage from "@/components/auth/SignInPage";
+import StoryPage from "@/components/stories/StoryPage";
 
-export async function generateMetadata({ params }) {
-  const { id } = await params;
-  const story = await getStory(id);
-  return { title: story?.data?.heading ?? "Story" };
-}
+// No route title: the story loads in the browser and StoryPage renders the page's <title>.
+// A Next title would sit first in <head> and win.
+export const metadata = {
+  title: null,
+};
 
+// The API serves stories only to signed-in readers, and the token is in the browser, so the
+// story loads there.
 export default async function StoryDetailRoute({ params }) {
   const { id } = await params;
-  const story = await getStory(id);
-  if (!story?.data) notFound();
-  return <StoryDetail data={story} />;
+  return (
+    <RequireAuth fallback={<SignInPage />}>
+      <StoryPage key={id} id={id} />
+    </RequireAuth>
+  );
 }

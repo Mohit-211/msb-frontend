@@ -2,34 +2,31 @@
 
 import Image from "next/image";
 import Link, { useLinkStatus } from "next/link";
+import { Lock } from "lucide-react";
 import { useIsClient } from "@/hooks/useIsClient";
 import styles from "./StoryCard.module.scss";
 import { Image_URL } from "@/lib/config";
 import CommonImage from "@/assets/images/brand-collage.png";
 
 // Lives inside the link: shows a spinner while Next loads the story.
-function ReadMoreLabel() {
+function ReadMoreLabel({ locked }) {
   const { pending } = useLinkStatus();
-  return pending ? (
-    <>
-      <span className={styles.spinner} aria-hidden="true"></span>
-      <span>Loading...</span>
-    </>
-  ) : (
-    "Read More"
-  );
+  if (pending) {
+    return (
+      <>
+        <span className={styles.spinner} aria-hidden="true"></span>
+        <span>Loading...</span>
+      </>
+    );
+  }
+  return locked ? "Read preview" : "Read More";
 }
 
 function StoryCard(props) {
   const isClient = useIsClient();
 
-  // AI stories have no page of their own; /story-read shows the one saved here.
-  const href = props.input ? "/story-read" : `/story-detail/${props.path}`;
-  const handleClick = () => {
-    if (props.input) {
-      sessionStorage.setItem("storyData", JSON.stringify(props));
-    }
-  };
+  // Saved AI stories (they carry their prompt) open from /story-read.
+  const href = props.input ? `/story-read/${props.path}` : `/story-detail/${props.path}`;
 
   const imageSrc =
     isClient &&
@@ -55,15 +52,20 @@ function StoryCard(props) {
           height={250}
           className={styles.cardImage}
         />
-        {props.paid && <span className={styles.badge}>Premium</span>}
+        {props.paid && (
+          <span className={styles.badge}>
+            {props.locked && <Lock size={12} aria-hidden="true" />}
+            Premium
+          </span>
+        )}
       </div>
 
       <div className={styles.cardBody}>
         <h3 className={styles.cardTitle}>{props.title}</h3>
         <p className={styles.cardText}>{getPlainText(props.text)}</p>
 
-        <Link href={href} onClick={handleClick} className={styles.readButton}>
-          <ReadMoreLabel />
+        <Link href={href} className={styles.readButton}>
+          <ReadMoreLabel locked={props.locked} />
         </Link>
       </div>
     </article>

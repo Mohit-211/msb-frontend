@@ -4,17 +4,13 @@ import { useState } from "react";
 import styles from "./ForgotPasswordPage.module.scss";
 import { Field, Input, PasswordInput } from "@/components/ui/field/Field";
 import { OtpInput } from "@/components/ui/otp-input/OtpInput";
+import { PASSWORD_RULE, meetsPasswordPolicy } from "@/lib/password";
 const ResetPasswordStep = ({ formData, setFormData }) => {
   const [passwordError, setPasswordError] = useState(false);
   const [passwordMatchError, setPasswordMatchError] = useState(false);
   const handlePasswordChange = (password) => {
-    setPasswordError(!isPasswordStrong(password));
+    setPasswordError(password !== "" && !meetsPasswordPolicy(password));
     setFormData({ ...formData, password: password });
-  };
-  const isPasswordStrong = (enteredPassword) => {
-    const passwordRegex =
-      /^(?=.*[!@#$%^&()\-_=+<>?/{}~])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$/;
-    return passwordRegex.test(enteredPassword);
   };
   const handleConfirmPassChange = (e) => {
     const enteredConfirmPassword = e.target.value;
@@ -40,11 +36,8 @@ const ResetPasswordStep = ({ formData, setFormData }) => {
           </Field>
           <Field
             label="Password"
-            error={
-              passwordError
-                ? "Password must be at least 8 characters long and contain at least one uppercase letter, one special character, and one number."
-                : undefined
-            }
+            hint={passwordError ? undefined : PASSWORD_RULE}
+            error={passwordError ? PASSWORD_RULE : undefined}
           >
             <PasswordInput
               placeholder="New Password"

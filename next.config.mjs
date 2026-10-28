@@ -25,6 +25,8 @@ const nextConfig = {
       { source: "/signup", destination: "/signin", permanent: false },
       { source: "/otp", destination: "/signin", permanent: false },
       { source: "/pay", destination: "/", permanent: false },
+      // Saved stories open by id now (/story-read/:id); the old page read them from the tab.
+      { source: "/story-read", destination: "/story/my-saved-story", permanent: false },
     ];
   },
 };

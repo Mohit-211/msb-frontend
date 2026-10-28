@@ -19,3 +19,9 @@ export function formatRelativeTime(date, now = Date.now()) {
   }
   return relativeTime.format(Math.round(seconds), "second");
 }
+
+// "October 31": a day the reader will recognize, in their time zone.
+export function formatDay(date) {
+  const time = new Date(date);
+  return Number.isNaN(time.getTime()) ? "" : time.toLocaleDateString("en-US", { month: "long", day: "numeric" });
+}

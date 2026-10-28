@@ -111,3 +111,12 @@
 .avatarPreview {
     border-radius: var(--radius-full);
 }
+
+// Trial and free accounts: where to subscribe
+.subscribeLink {
+    display: inline-block;
+    margin-top: var(--space-1);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-primary);
+}

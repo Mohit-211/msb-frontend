@@ -1,20 +1,12 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
-import { getLocalStorageItem } from "@/lib/storage";
-
-function subscribe(onChange) {
-  window.addEventListener("storage", onChange);
-  return () => window.removeEventListener("storage", onChange);
-}
-
-const isSignedIn = () => Boolean(getLocalStorageItem("UserLoginToken"));
+import { useToken } from "@/hooks/useToken";
 
 // Shows children to signed-in visitors and `fallback` to everyone else. The token lives in
-// localStorage, so the server renders nothing and the browser decides; signing in or out in
-// another tab updates this one.
+// localStorage, so the server renders nothing and the browser decides. Signing in or out (in
+// this tab or another) or the API ending the session switches between the two.
 export default function RequireAuth({ children, fallback = null }) {
-  const signedIn = useSyncExternalStore(subscribe, isSignedIn, () => null);
-  if (signedIn === null) return null;
-  return signedIn ? children : fallback;
+  const token = useToken();
+  if (token === undefined) return null;
+  return token ? children : fallback;
 }

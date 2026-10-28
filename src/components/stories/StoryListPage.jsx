@@ -8,7 +8,6 @@ import { useParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { Funnel, LoaderCircle } from "lucide-react";
 import { BlogByCategoryApi, AllCategoryAPI } from "@/lib/api";
-import { getLocalStorageItem } from "@/lib/storage";
 import { Image_URL } from "@/lib/config";
 import dummyStory from "@/assets/images/story-placeholder.png";
 import StoriesBanner from "./StoriesBanner";
@@ -17,6 +16,7 @@ import StoryGeneratorLauncher from "@/components/story-generator/StoryGeneratorL
 import styles from "./StoryListPage.module.scss";
 import { fetchStoryHistory } from "@/store/slices/storyHistorySlice";
 import Pagination from "@/components/ui/pagination/Pagination";
+import PlanNotice from "@/components/account/PlanNotice";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog/Dialog";
 
 const DEFAULT_TITLE = "My Story Bank 2.0";
@@ -39,7 +39,6 @@ function StoryListPage() {
   const count = Math.ceil(dataCount / PER_PAGE);
   const [showFilter, setShowFilter] = useState(false);
   const isClient = useIsClient();
-  const storedValue = getLocalStorageItem("UserLoginToken");
   const savedStories = useSelector(
     (state) => state?.rootReducer?.storyHistory?.history,
   );
@@ -56,7 +55,7 @@ function StoryListPage() {
 
   useEffect(() => {
     if (slug === "my-saved-story") {
-      dispatch(fetchStoryHistory(storedValue));
+      dispatch(fetchStoryHistory());
       return;
     }
     BlogByCategoryApi(slug, PER_PAGE, page)
@@ -70,7 +69,7 @@ function StoryListPage() {
       .finally(() => {
         setIsLoading(false);
       });
-  }, [slug, page, dispatch, storedValue]);
+  }, [slug, page, dispatch]);
 
   useEffect(() => {
     AllCategoryAPI()
@@ -135,7 +134,8 @@ function StoryListPage() {
                   : dummyStory
               }
               path={item.id}
-              paid={item.type}
+              paid={item.type === "PAID"}
+              locked={item.is_locked}
               input={item.input}
             />
           </div>
@@ -153,6 +153,8 @@ function StoryListPage() {
       />
 
       <div className={styles.container}>
+        <PlanNotice className={styles.planNotice} />
+
         {/* Mobile: categories open in a sheet from the left */}
         <Dialog open={showFilter} onOpenChange={setShowFilter}>
           <DialogTrigger className={styles.filterButton}>

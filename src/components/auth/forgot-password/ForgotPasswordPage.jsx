@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import RequestCodeStep from "./RequestCodeStep";
 import ResetPasswordStep from "./ResetPasswordStep";
-import { ForgetSendOTPAPI, ForgotPassword } from "@/lib/api";
+import { ForgetSendOTPAPI, ForgotPassword, errorMessage } from "@/lib/api";
+import { meetsPasswordPolicy } from "@/lib/password";
 import styles from "./ForgotPasswordPage.module.scss";
 import { Button } from "@/components/ui/button/Button";
 import { toast } from "@/components/ui/toast/toast";
@@ -25,13 +26,15 @@ export default function ForgotPasswordPage() {
     confirmPassword: "",
   });
 
+  // The API allows 5 wrong guesses per code, so only send a complete code and a valid password.
+  const readyToReset =
+    formData.otp.length === 6 &&
+    meetsPasswordPolicy(formData.password) &&
+    formData.password === formData.confirmPassword;
+
   const handleChangePassword = () => {
-    ForgotPassword(
-      formData.email,
-      parseInt(formData.otp),
-      formData.password,
-      formData.confirmPassword
-    )
+    // The code goes as typed: a string keeps leading zeros.
+    ForgotPassword(formData.email, formData.otp, formData.password, formData.confirmPassword)
       .then((res) => {
         if (res.status) {
           toast.success(res.data.message);
@@ -41,10 +44,7 @@ export default function ForgotPasswordPage() {
         }, 2000);
       })
       .catch((error) => {
-        toast.warning(
-          error?.response?.data?.message ||
-            "Password and Confirm Password must be equal",
-        );
+        toast.warning(errorMessage(error, "Couldn’t reset your password. Try again."));
       });
   };
 
@@ -66,9 +66,7 @@ export default function ForgotPasswordPage() {
         setCodeSent(true);
       })
       .catch((error) => {
-        const data = error?.response?.data;
-        const show = data?.code === 404 ? toast.warning : toast.info;
-        show(data?.message || "Couldn't send the code. Try again.");
+        toast.warning(errorMessage(error, "Couldn't send the code. Try again."));
       });
   };
 
@@ -81,7 +79,9 @@ export default function ForgotPasswordPage() {
       )}
       <div className={styles.actions}>
         {codeSent ? (
-          <Button onClick={handleChangePassword}>Reset Password</Button>
+          <Button onClick={handleChangePassword} disabled={!readyToReset}>
+            Reset Password
+          </Button>
         ) : (
           <Button onClick={handleSendOTP}>Send OTP</Button>
         )}

@@ -1,3 +1,5 @@
+import RequireAuth from "@/components/auth/RequireAuth";
+import SignInPage from "@/components/auth/SignInPage";
 import ProfilePage from "@/components/profile/ProfilePage";
 
 export const metadata = {
@@ -5,5 +7,9 @@ export const metadata = {
 };
 
 export default function ProfileRoute() {
-  return <ProfilePage />;
+  return (
+    <RequireAuth fallback={<SignInPage />}>
+      <ProfilePage />
+    </RequireAuth>
+  );
 }

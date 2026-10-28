@@ -3,25 +3,23 @@
 import { useState } from "react";
 import Link from "next/link";
 import styles from "./SignInPage.module.scss";
-import { UserLoginAPI } from "@/lib/api";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { fetchProfile } from "@/store/slices/profileSlice";
+import { UserLoginAPI, errorMessage } from "@/lib/api";
+import { usePathname, useRouter } from "next/navigation";
+import { setToken } from "@/lib/session";
 import BrandCollage from "./BrandCollage";
 import { toast } from "@/components/ui/toast/toast";
 import { Button } from "@/components/ui/button/Button";
 import { Field, Input, PasswordInput } from "@/components/ui/field/Field";
+import { SUBSCRIBE_URL } from "@/lib/config";
 
-// Accounts are created by an admin once someone has paid here, off the platform.
-const SUBSCRIBE_URL = "https://transactions.sendowl.com/products/78271145/4A5919F0/view";
 
 const SignInPage = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
 
   const validateEmail = (input) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -47,24 +45,18 @@ const SignInPage = () => {
     UserLoginAPI(email, password)
       .then((res) => {
         setLoading(false);
-        if (res.data === 200 || res.data.status === 200) {
+        if (res.data.status === 200) {
           toast.success("Congratulations! You have successfully logged in.");
-          setTimeout(() => {
-            const token = res.data.data.tokens.access.token;
-            localStorage.removeItem("UserLoginToken");
-            localStorage.setItem("UserLoginToken", token);
-            dispatch(fetchProfile(token));
-            router.replace("/story/all");
-          }, 1000);
+          setToken(res.data.data.tokens.access.token);
+          // On /signin, go to the stories. Anywhere else this form stood in for a page that
+          // needs a signed-in reader, and that page now shows in its place.
+          if (pathname === "/signin") router.replace("/story/all");
         }
       })
       .catch((error) => {
         console.log(error, "error");
         setLoading(false);
-        toast.error(
-          error?.response?.data?.message ||
-            "Couldn't sign in. Check your connection and try again.",
-        );
+        toast.error(errorMessage(error, "Couldn't sign in. Check your connection and try again."));
       });
   };
 

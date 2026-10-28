@@ -1,28 +1,27 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { GetProfile } from "@/lib/api";
-export const fetchProfile = createAsyncThunk(
-  "profile/getprofile",
-  async (value) => {
-    try {
-      if(value){
 
-        const response = await GetProfile(value);
-        return response.data;
-      }
-    } catch (error) {
-      throw error;
-    }
-  }
-);
+// The signed-in user's profile, including access: { plan, trial_ends_at, can_read_paid_stories,
+// can_save_stories }. The header loads it whenever the token changes.
+export const fetchProfile = createAsyncThunk("profile/getprofile", async () => {
+  const response = await GetProfile();
+  return response.data;
+});
 
 const profileSlice = createSlice({
   name: "clientProfile",
   initialState: {
-    clientProfile: {},
+    clientProfile: null,
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    // Signing out forgets the previous user's profile.
+    profileCleared(state) {
+      state.clientProfile = null;
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchProfile.pending, (state) => {
@@ -39,5 +38,10 @@ const profileSlice = createSlice({
       });
   },
 });
+
+export const { profileCleared } = profileSlice.actions;
+export const selectProfile = (state) => state.rootReducer.clientProfile.clientProfile;
+// null until the profile has loaded
+export const selectAccess = (state) => selectProfile(state)?.access ?? null;
 
 export default profileSlice.reducer;
